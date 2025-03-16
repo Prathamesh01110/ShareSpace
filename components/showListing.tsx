@@ -1,40 +1,40 @@
 "use client";
 import BookingSummary from "@/components/spacecomp/slug/Booking";
 import { CancellationPolicy, CleaningMeasure, CovidSignage, DistanceMeasure, Listing, OperatingHours, ParkingOptions, ProtectiveGear } from "@prisma/client";
-import { ChevronDown, ChevronUp, LandPlot, LayoutGrid, NotepadText, ShieldCheck, SquareParking ,Share, Heart} from "lucide-react";
+import { ChevronDown, ChevronUp, LandPlot, LayoutGrid, NotepadText, ShieldCheck, SquareParking, Share, Heart } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import SharePop from "@/components/spacecomp/Share";
+import { FullListingData } from "@/app/actions/fetchSpacesToShow";
 
-export default function ShowListing({ 
-    params, 
-    listing, 
-    operatingHours 
-}: { 
-    params: { id: string }; 
-    listing: Listing; 
-    operatingHours: OperatingHours[]; 
-}) {    const listingId = params.id;
+export default function ShowListing({
+    params,
+    listing,
+}: {
+    params: { id: string };
+    listing: FullListingData;
+}) {
+    const listingId = params.id;
     const router = useRouter();
     const { data: session } = useSession();
     const pathname = usePathname();
     const [fullUrl, setFullUrl] = useState("");
-    const [PopUP,setPopup] = useState(false);
+    const [PopUP, setPopup] = useState(false);
     const [saved, setSaved] = useState(false);
 
     const saveClicked = () => {
-      setSaved((prev) => !prev);
+        setSaved((prev) => !prev);
     };
-  useEffect(() => {
-    const baseUrl =`${window.location.protocol}//${window.location.host}`;
-    const url = `${baseUrl}${pathname}`;
-    setFullUrl(url);
-    console.log("Full URL constructed:", url);
-  }, [pathname]);
-  console.log("This is the Current URL:",fullUrl);
+    useEffect(() => {
+        const baseUrl = `${window.location.protocol}//${window.location.host}`;
+        const url = `${baseUrl}${pathname}`;
+        setFullUrl(url);
+        console.log("Full URL constructed:", url);
+    }, [pathname]);
+    console.log("This is the Current URL:", fullUrl);
     const [readMore, setReadMore] = useState(false);
     const [showMore, setShowMore] = useState(false);
     const [showCleaningProtocol, setShowCleaningProtocol] = useState(false);
@@ -127,7 +127,7 @@ export default function ShowListing({
     //     getListing();
     // }, [listingId])
 
-    function renderPopup(){
+    function renderPopup() {
         setPopup(true);
     }
     return (
@@ -143,162 +143,170 @@ export default function ShowListing({
             <main>
                 <div className="w-[58%] pt-28 flex-row justify-between flex mx-auto ">
                     <div className="flex flex-row justify-between">
-                    <div className=" flex-col flex mx-auto">
-                    <div className="flex-row flex justify-between">
-                        <div className="flex-col flex ">
-                        <div className="font-semibold text-2xl pb-2">{listing?.name}</div>
-                        <div className="text-gray-600  text-sm pb-6">{listing?.address}, {listing?.city}, {listing?.state}</div>
-                        </div>
-                        <div className="flex-row flex gap-4  my-auto">
-                        <div 
-  className="flex items-center gap-2 px-4 py-2 text-gray-800 font-semibold rounded-md cursor-pointer transition-all duration-200"
-  onClick={renderPopup}
->
-  <Share />
-  <span className="text-lg">Share</span>
-</div>
+                        <div className=" flex-col flex mx-auto">
 
-<div
-      className="flex items-center gap-2 px-4 py-2 text-gray-800 font-semibold rounded-md cursor-pointer transition-all duration-200"
-      onClick={saveClicked}
-    >
-      <Heart className={`w-6 h-6 transition-colors duration-300 ${saved ? "text-purple-600 fill-purple-600" : "text-gray-500"}`} />
-      <span className="text-lg">{saved ? "Saved" : "Save"}</span>
-    </div>
+                            <div className="flex-row flex justify-between">
+                                <div className="flex-col flex ">
+                                    <div className="font-semibold text-2xl pb-2">{listing?.space.name}</div>
+                                    <div className="text-gray-600  text-sm pb-6">{listing?.space.address}, {listing?.space.city}, {listing?.space.state}</div>
+                                </div>
+                                <div className="flex-row flex gap-4  my-auto">
+                                    <div
+                                        className="flex items-center gap-2 px-4 py-2 text-gray-800 font-semibold rounded-md cursor-pointer transition-all duration-200"
+                                        onClick={renderPopup}
+                                    >
+                                        <Share />
+                                        <span className="text-lg">Share</span>
+                                    </div>
 
-                        </div>
-                    </div>
-                        <div className="flex flex-row gap-2 pb-8">
-                            <img src={listing?.photos[0]} alt={"image"} className="w-1/2 h-[550px] rounded-sm object-cover" />
-                            <div className="grid grid-cols-2 gap-2 w-1/2 h-[550px]  ">
-                                <img src={listing?.photos[1]} alt={"image"} className="h-full w-full  rounded-sm object-cover" />
-                                <img src={listing?.photos[2]} alt={"image"} className="h-full w-full  rounded-sm object-cover" />
-                                <img src={listing?.photos[3]} alt={"image"} className="h-full w-full  rounded-sm object-cover" />
-                                <div className="relative h-full w-full flex items-center justify-center ">
-                                    <img src={listing?.photos[1]} alt={"image"} className="absolute h-full w-full  rounded-sm object-cover bg-black " />
-                                    <div className="absolute inset-0 bg-black opacity-50 rounded-sm"></div>
-                                    <span className="absolute text-white text-sm flex flex-col items-center justify-center cursor-pointer gap-1" onClick={() => router.push(`/spaces/showPhotos/${listingId}`)}><LayoutGrid size={16} />View all</span>
+                                    <div
+                                        className="flex items-center gap-2 px-4 py-2 text-gray-800 font-semibold rounded-md cursor-pointer transition-all duration-200"
+                                        onClick={saveClicked}
+                                    >
+                                        <Heart className={`w-6 h-6 transition-colors duration-300 ${saved ? "text-purple-600 fill-purple-600" : "text-gray-500"}`} />
+                                        <span className="text-lg">{saved ? "Saved" : "Save"}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div className="flex flex-row gap-2 pb-8">
+                                <img src={listing?.space.photos[0]} alt={"image"} className="w-1/2 h-[550px] rounded-sm object-cover" />
+                                <div className="grid grid-cols-2 gap-2 w-1/2 h-[550px]  ">
+                                    <img src={listing?.space.photos[1]} alt={"image"} className="h-full w-full  rounded-sm object-cover" />
+                                    <img src={listing?.space.photos[2]} alt={"image"} className="h-full w-full  rounded-sm object-cover" />
+                                    <img src={listing?.space.photos[3]} alt={"image"} className="h-full w-full  rounded-sm object-cover" />
+                                    <div className="relative h-full w-full flex items-center justify-center ">
+                                        <img src={listing?.space.photos[1]} alt={"image"} className="absolute h-full w-full  rounded-sm object-cover bg-black " />
+                                        <div className="absolute inset-0 bg-black opacity-50 rounded-sm"></div>
+                                        <span className="absolute text-white text-sm flex flex-col items-center justify-center cursor-pointer gap-1" onClick={() => router.push(`/spaces/showPhotos/${listingId}`)}><LayoutGrid size={16} />View all</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-8">
+                                <div className="flex flex-col w-full col-span-2">
+                                    <div className="flex flex-row gap-2">
+                                        <LandPlot size={20} />
+                                        <span className="text-sm">{listing?.space.size} sqft</span>
+                                    </div>
+                                    <hr className="border-t border-gray-200 mt-8 mb-8" />
+                                    <div className="flex flex-row gap-2 items-center">
+                                        <div className="w-6 h-6 rounded-full bg-gray-300 "></div>
+                                        <span className="text-sm text-gray-600 font-light">Hosted by {session?.user?.name}</span>
+                                    </div>
+                                    <hr className="border-t border-gray-200 mt-8 mb-8 " />
+                                    <article className="flex flex-col text-wrap w-full">
+                                        <span className="font-medium text-xl pb-4 text-pretty">About the Space</span>
+                                        {readMore ? (
+                                            <span className="text-gray-600 text-sm break-words">{listing?.space.description}</span>
+                                        ) : (
+                                            <span className="text-gray-600 text-sm break-words">{listing?.space.description?.slice(0, 250)}...</span>
+                                        )}
+                                        <span onClick={() => setReadMore(!readMore)} className="text-gray-500 text-sm underline  cursor-pointer">Read {readMore ? "less" : "more"}</span>
+                                    </article>
+                                    <div className="flex flex-row justify-between gap-2 mt-12 hover:text-gray-400 " onClick={() => setShowMore(!showMore)}>
+                                        <div className="flex flex-row gap-4 items-center ">
+                                            <SquareParking strokeWidth={1.5} />
+                                            <h1 className="font-medium text-lg cursor-pointer">Parking</h1>
+                                        </div>
+                                        <ChevronDown className={`text - gray - 500 transition-transform duration-300 ${showMore ? "transform rotate-180" : ""}`} />
+                                    </div>
+                                    {showMore && (
+                                        <>
+                                            <h1 className="px-10 pt-10 pb-1 text-sm font-medium">Parking Options</h1>
+                                            {listing?.space.parkingOptions.map((value, index) => (
+                                                <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{PARKING_OPTIONS[value as ParkingOptions]}</span>
+                                            ))}
+                                            <h1 className="px-10 pt-10 pb-1 text-sm  font-medium">Parking Options</h1>
+                                            {listing?.space.parkingDescription?.length as number > 0 ? (
+                                                <span className="text-xs px-10  pb-1 text-gray-500 font-medium">{listing?.space.parkingDescription}</span>
+                                            ) : (
+                                                <span className="text-xs px-10  pb-1 text-gray-500 font-medium">No Parking Description</span>
+                                            )}
+                                        </>
+                                    )}
+                                    <hr className="border-t border-gray-200 mt-6 mb-6 " />
+                                    <div className="flex flex-row justify-between gap-2 mt-2 hover:text-gray-400 " onClick={() => setShowHostRules(!showHostRules)}>
+                                        <div className="flex flex-row gap-4 items-center ">
+                                            <NotepadText strokeWidth={1.5} />
+                                            <h1 className="font-medium text-lg cursor-pointer">Host rules</h1>
+                                        </div>
+                                        <ChevronDown className={`text - gray - 500 transition-transform duration-300 ${showHostRules ? "transform rotate-180" : ""}`} />
+                                    </div>
+                                    {showHostRules && (
+                                        <>
+                                            <h1 className="px-10 pt-10 pb-1 text-sm font-medium">General Rules</h1>
+                                            {listing?.space.rules?.length as number > 0 ? (
+                                                <span className="text-xs px-10  pb-1 text-gray-500 font-medium w-1/2">{listing?.space.rules}</span>
+                                            ) : (<span className="text-xs px-10  pb-1 text-gray-500 font-medium">No Rules</span>)}
+                                            <h1 className="px-10 pt-10 pb-1 text-sm font-medium">{listing?.space.age} are allowed in the space</h1>
+                                            {listing?.space.securityCameras ? (
+                                                <h1 className="px-10 pt-10 text-sm font-medium">Security cameras and recording devices</h1>
+                                            ) : (
+                                                <h1 className="px-10 pt-10 pb-1 text-sm font-medium">No security cameras and recording devices</h1>
+                                            )}
+                                            <span className="text-xs px-10  pb-1 text-gray-500 font-medium w-1/2">Recording devices in bathrooms or dressing rooms are prohibited by the Sharespace. </span>
+                                        </>
+                                    )}
+                                    <hr className="border-t border-gray-200 mt-8 mb-8 " />
+                                    <h1 className="font-medium text-lg pb-4">Operating Hours</h1>
+                                    {listing?.space.operatingHours.map((value, index) => (
+                                        <div key={index} className="flex flex-row justify-between ">
+                                            <span className="text-sm py-0.5 text-gray-800">{value.dayOfWeek.charAt(0) + value.dayOfWeek.slice(1).toLowerCase()}</span>
+                                            {value.isOpen ? (
+                                                <span className="text-sm text-gray-800">{value.openTime} - {value.closeTime} </span>
+                                            ) :
+                                                <span className="text-sm text-gray-800">Closed</span>
+                                            }
+                                        </div>
+                                    ))}
+                                    <hr className="border-t border-gray-200 mt-6 mb-6 " />
+                                    <div className="flex flex-row justify-between gap-2  hover:text-gray-400 " onClick={() => setShowCleaningProtocol(!showCleaningProtocol)}>
+                                        <div className="flex flex-row gap-4 items-center ">
+                                            <ShieldCheck strokeWidth={1.5} />
+                                            <h1 className="font-medium text-lg cursor-pointer">Cleaning protocol</h1>
+                                        </div>
+                                        <ChevronDown className={`text-gray-500 transition-transform duration-300 ${showCleaningProtocol ? "transform rotate-180" : ""}`} />
+                                    </div>
+                                    {showCleaningProtocol && (
+                                        <>
+                                            <h1 className="px-10 pt-8 pb-1 text-sm font-medium">Hosts will ensure the following things</h1>
+                                            {listing?.space.cleaningMeasures.map((value, index) => (
+                                                <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{CLEANING_MEASURES[value as CleaningMeasure]}</span>
+                                            ))}
+                                            {listing?.space.protectiveGear.map((value, index) => (
+                                                <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{PROTECTIVE_GEAR[value as ProtectiveGear]}</span>
+                                            ))}
+                                            {listing?.space.distanceMeasures.map((value, index) => (
+                                                <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{DISTANCE_MEASURES[value as DistanceMeasure]}</span>
+                                            ))}
+                                            {listing?.space.covidSignage.map((value, index) => (
+                                                <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{COVID_SIGNAGE[value as CovidSignage]}</span>
+                                            ))}
+                                        </>
+                                    )}
+                                    <hr className="border-t border-gray-200 mt-6 mb-6 " />
+                                    <h1 className="font-medium text-lg cursor-pointer">Cancellation policy</h1>
+                                    <h1 className="font-medium pt-4  pb-2 cursor-pointer">{POLICIES[listing?.space.cancellationPolicy as keyof typeof POLICIES]?.name}</h1>
+                                    {readMorePolicy ? (
+                                        <h1 className="font-normal text-sm  text-gray-600 break-words  cursor-pointer ">{POLICIES[listing?.space.cancellationPolicy as keyof typeof POLICIES]?.rules}</h1>
+                                    ) : (
+                                        <h1 className="font-normal text-sm  text-gray-600 break-words  cursor-pointer ">{POLICIES[listing?.space.cancellationPolicy as keyof typeof POLICIES]?.rules.slice(0, 250)}...</h1>
+                                    )}
+                                    <span onClick={() => setReadMorePolicy(!readMorePolicy)} className="text-gray-500 text-sm underline  cursor-pointer">Read {readMorePolicy ? "less" : "more"}</span>
+                                    <hr className="border-t border-gray-200 mt-6 mb-6 " />
+                                </div>
+                                <div>
+                                    <BookingSummary spaceData={listing} />
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-row gap-2">
-                            <LandPlot size={20} />
-                            <span className="text-sm">{listing?.size} sqft</span>
-                        </div>
-                        <hr className="border-t border-gray-200 mt-8 mb-8 w-2/3" />
-                        <div className="flex flex-row gap-2 items-center">
-                            <div className="w-6 h-6 rounded-full bg-gray-300 "></div>
-                            <span className="text-sm text-gray-600 font-light">Hosted by {session?.user?.name}</span>
-                        </div>
-                        <hr className="border-t border-gray-200 mt-8 mb-8 w-2/3" />
-                        <article className="flex flex-col text-wrap w-2/3">
-                            <span className="font-medium text-xl pb-4 text-pretty">About the Space</span>
-                            {readMore ? (
-                                <span className="text-gray-600 text-sm break-words">{listing?.description}</span>
-                            ) : (
-                                <span className="text-gray-600 text-sm break-words">{listing?.description?.slice(0, 250)}...</span>
-                            )}
-                            <span onClick={() => setReadMore(!readMore)} className="text-gray-500 text-sm underline  cursor-pointer">Read {readMore ? "less" : "more"}</span>
-                        </article>
-                        <div className="flex flex-row justify-between gap-2 mt-12 hover:text-gray-400 w-2/3" onClick={() => setShowMore(!showMore)}>
-                            <div className="flex flex-row gap-4 items-center ">
-                                <SquareParking strokeWidth={1.5} />
-                                <h1 className="font-medium text-lg cursor-pointer">Parking</h1>
-                            </div>
-                            <ChevronDown className={`text - gray - 500 transition-transform duration-300 ${showMore ? "transform rotate-180" : ""}`} />
-                        </div>
-                        {showMore && (
-                            <>
-                                <h1 className="px-10 pt-10 pb-1 text-sm font-medium">Parking Options</h1>
-                                {listing?.parkingOptions.map((value, index) => (
-                                    <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{PARKING_OPTIONS[value as ParkingOptions]}</span>
-                                ))}
-                                <h1 className="px-10 pt-10 pb-1 text-sm  font-medium">Parking Options</h1>
-                                {listing?.parkingDescription?.length as number > 0 ? (
-                                    <span className="text-xs px-10  pb-1 text-gray-500 font-medium w-2/3">{listing?.parkingDescription}</span>
-                                ) : (
-                                    <span className="text-xs px-10  pb-1 text-gray-500 font-medium">No Parking Description</span>
-                                )}
-                            </>
-                        )}
-                        <hr className="border-t border-gray-200 mt-6 mb-6 w-2/3" />
-                        <div className="flex flex-row justify-between gap-2 mt-2 hover:text-gray-400 w-2/3" onClick={() => setShowHostRules(!showHostRules)}>
-                            <div className="flex flex-row gap-4 items-center ">
-                                <NotepadText strokeWidth={1.5} />
-                                <h1 className="font-medium text-lg cursor-pointer">Host rules</h1>
-                            </div>
-                            <ChevronDown className={`text - gray - 500 transition-transform duration-300 ${showHostRules ? "transform rotate-180" : ""}`} />
-                        </div>
-                        {showHostRules && (
-                            <>
-                                <h1 className="px-10 pt-10 pb-1 text-sm font-medium">General Rules</h1>
-                                {listing?.rules?.length as number > 0 ? (
-                                    <span className="text-xs px-10  pb-1 text-gray-500 font-medium w-1/2">{listing?.rules}</span>
-                                ) : (<span className="text-xs px-10  pb-1 text-gray-500 font-medium">No Rules</span>)}
-                                <h1 className="px-10 pt-10 pb-1 text-sm font-medium">{listing?.age} are allowed in the space</h1>
-                                {listing?.securityCameras ? (
-                                    <h1 className="px-10 pt-10 text-sm font-medium">Security cameras and recording devices</h1>
-                                ) : (
-                                    <h1 className="px-10 pt-10 pb-1 text-sm font-medium">No security cameras and recording devices</h1>
-                                )}
-                                <span className="text-xs px-10  pb-1 text-gray-500 font-medium w-1/2">Recording devices in bathrooms or dressing rooms are prohibited by the Sharespace. </span>
-                            </>
-                        )}
-                        <hr className="border-t border-gray-200 mt-8 mb-8 w-2/3" />
-                        <h1 className="font-medium text-lg pb-4">Operating Hours</h1>
-                        {operatingHours.map((value, index) => (
-                            <div key={index} className="flex flex-row justify-between w-2/3">
-                                <span className="text-sm py-0.5 text-gray-800">{value.dayOfWeek.charAt(0) + value.dayOfWeek.slice(1).toLowerCase()}</span>
-                                {value.isOpen ? (
-                                    <span className="text-sm text-gray-800">{value.openTime} - {value.closeTime} </span>
-                                ) :
-                                    <span className="text-sm text-gray-800">Closed</span>
-                                }
-                            </div>
-                        ))}
-                        <hr className="border-t border-gray-200 mt-6 mb-6 w-2/3" />
-                        <div className="flex flex-row justify-between gap-2  hover:text-gray-400 w-2/3" onClick={() => setShowCleaningProtocol(!showCleaningProtocol)}>
-                            <div className="flex flex-row gap-4 items-center ">
-                                <ShieldCheck strokeWidth={1.5} />
-                                <h1 className="font-medium text-lg cursor-pointer">Cleaning protocol</h1>
-                            </div>
-                            <ChevronDown className={`text-gray-500 transition-transform duration-300 ${showCleaningProtocol ? "transform rotate-180" : ""}`} />
-                        </div>
-                        {showCleaningProtocol && (
-                            <>
-                                <h1 className="px-10 pt-8 pb-1 text-sm font-medium">Hosts will ensure the following things</h1>
-                                {listing?.cleaningMeasures.map((value, index) => (
-                                    <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{CLEANING_MEASURES[value as CleaningMeasure]}</span>
-                                ))}
-                                {listing?.protectiveGear.map((value, index) => (
-                                    <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{PROTECTIVE_GEAR[value as ProtectiveGear]}</span>
-                                ))}
-                                {listing?.distanceMeasures.map((value, index) => (
-                                    <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{DISTANCE_MEASURES[value as DistanceMeasure]}</span>
-                                ))}
-                                {listing?.covidSignage.map((value, index) => (
-                                    <span key={index} className="text-xs px-10  pb-1 text-gray-500 font-medium">{COVID_SIGNAGE[value as CovidSignage]}</span>
-                                ))}
-                            </>
-                        )}
-                        <hr className="border-t border-gray-200 mt-6 mb-6 w-2/3" />
-                        <h1 className="font-medium text-lg cursor-pointer">Cancellation policy</h1>
-                        <h1 className="font-medium pt-4  pb-2 cursor-pointer">{POLICIES[listing?.cancellationPolicy as keyof typeof POLICIES]?.name}</h1>
-                        {readMorePolicy ? (
-                            <h1 className="font-normal text-sm  text-gray-600 break-words  cursor-pointer w-2/3">{POLICIES[listing?.cancellationPolicy as keyof typeof POLICIES]?.rules}</h1>
-                        ) : (
-                            <h1 className="font-normal text-sm  text-gray-600 break-words  cursor-pointer w-2/3">{POLICIES[listing?.cancellationPolicy as keyof typeof POLICIES]?.rules.slice(0, 250)}...</h1>
-                        )}
-                        <span onClick={() => setReadMorePolicy(!readMorePolicy)} className="text-gray-500 text-sm underline  cursor-pointer">Read {readMorePolicy ? "less" : "more"}</span>
-                        <hr className="border-t border-gray-200 mt-6 mb-6 w-2/3" />
                     </div>
-                </div>
                 </div>
             </main>
 
-           {PopUP && (
-                              <SharePop onClose={() => setPopup(false)} URL={fullUrl}/>
-                          )}
+            {PopUP && (
+                <SharePop onClose={() => setPopup(false)} URL={fullUrl} />
+            )}
         </div>
     )
 }

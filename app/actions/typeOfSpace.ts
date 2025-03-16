@@ -3,10 +3,10 @@ import { getServerSession } from "next-auth"
 import { NEXT_AUTH } from "../lib/auth"
 import { UserSession } from "./fetchUser";
 import prisma from "@/lib/prisma";
-import { ListingFormData } from "../becomeHost/typeOfSpace/[id]/page";
+import { SpaceFormData } from "../becomeHost/typeOfSpace/[id]/page";
 
 
-export async function createTypeOfSpace(data: ListingFormData, listingId: string) {
+export async function createTypeOfSpace(data: SpaceFormData, spaceId: string) {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
     if (!session) return { error: "Unauthorized" };
     console.log(data);
@@ -20,18 +20,18 @@ export async function createTypeOfSpace(data: ListingFormData, listingId: string
         wifiPassword,
         arrivalInstructions,
     } = data
-    const listing = await prisma?.listing?.findUnique({
+    const space = await prisma?.space?.findUnique({
         where: {
-            id: listingId,
+            id: spaceId,
         }
     });
-    if (!listing || listing.userId !== session?.user?.id) {
+    if (!space || space.userId !== session?.user?.id) {
         return null;
     }
     try {
-        await prisma?.listing?.update({
+        await prisma?.space?.update({
             where: {
-                id: listingId,
+                id: spaceId,
             },
             data: {
                 name: spaceTitle,

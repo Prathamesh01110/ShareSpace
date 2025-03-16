@@ -7,23 +7,23 @@ import { CancellationPolicy } from "@prisma/client";
 import { FormValues } from "../becomeHost/cancellationPolicy/[id]/page";
 
 
-export async function createCancellationPolicy(data: FormValues, listingId: string) {
+export async function createCancellationPolicy(data: FormValues, spaceId: string) {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
     if (!session) return { error: "Unauthorized" };
     const { cancellationPolicy } = data;
     console.log(cancellationPolicy);
-    const listing = await prisma?.listing?.findUnique({
+    const space = await prisma?.space?.findUnique({
         where: {
-            id: listingId,
+            id: spaceId,
         }
     });
-    if (!listing || listing.userId !== session?.user?.id) {
+    if (!space || space.userId !== session?.user?.id) {
         return null;
     }
     try {
-        await prisma?.listing?.update({
+        await prisma?.space?.update({
             where: {
-                id: listingId,
+                id: spaceId,
             },
             data: {
                 cancellationPolicy: cancellationPolicy as CancellationPolicy,

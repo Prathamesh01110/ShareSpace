@@ -6,14 +6,14 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
-import { Listing } from "@prisma/client"
-import { fetchListings } from "../actions/fetchListings"
+import { Space } from "@prisma/client"
+import { fetchSpaces } from "../actions/fetchSpaces"
 import { deleteSpace } from "../actions/deleteSpace"
 
 export default function BecomeHostPage() {
     const router = useRouter();
     const { status } = useSession();
-    const [listing, setListing] = useState<Listing[]>([]);
+    const [space, setSpace] = useState<Space[]>([]);
 
     async function handleSubmit() {
         try {
@@ -22,34 +22,34 @@ export default function BecomeHostPage() {
             console.error("Error creating space", error);
         }
     }
-    async function handleDeleteSpace(listingId: string) {
+    async function handleDeleteSpace(spaceId: string) {
         try {
-            await deleteSpace(listingId);
+            await deleteSpace(spaceId);
             console.log("Deleted space");
-            setListing((prevListings) => prevListings.filter((item) => item.id !== listingId));
+            setSpace((prevSpaces) => prevSpaces.filter((item) => item.id !== spaceId));
         }
         catch (error) {
             console.log("Error deleting space", error);
         }
     }
-    async function handleResume(listingId: string) {
+    async function handleResume(spaceId: string) {
         try {
-            router.push(`/becomeHost/createSpace/${listingId}`);
+            router.push(`/becomeHost/createSpace/${spaceId}`);
         } catch (error) {
             console.error("Error creating space", error);
         }
     }
     useEffect(() => {
-        async function getListing() {
+        async function getSpace() {
             try {
-                const result = await fetchListings() as Listing[];
-                setListing(result);
+                const result = await fetchSpaces() as Space[];
+                setSpace(result);
             } catch (error) {
-                console.error("Error fetching listings", error);
+                console.error("Error fetching spaces", error);
             }
         }
         if (status === 'authenticated') {
-            getListing();
+            getSpace();
         }
     }, [status]);
 
@@ -69,24 +69,24 @@ export default function BecomeHostPage() {
                     <Link href="/" className="flex items-center space-x-2">
                         <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
                     </Link>
-                    <span className="text-white text-lg mr-10  font-medium">My Listings</span>
+                    <span className="text-white text-lg mr-10  font-medium">My Spaces</span>
                 </div>
             </nav>
             <main>
                 <div className="w-[58%] pt-32 flex-col flex mx-auto ">
                     <div className="flex flex-row items-center justify-between pb-10">
-                        <h1 className="font-bold text-3xl ">Listings</h1>
+                        <h1 className="font-bold text-3xl ">Spaces</h1>
                         <Button className="rounded-none  font-semibold p-6" variant={"outline"} onClick={handleSubmit}>Add a Space</Button>
                     </div>
-                    {listing?.length > 0 ? (listing?.map((listing,index) => (
+                    {space?.length > 0 ? (space?.map((space,index) => (
                         <div className="border w-full h-24 flex flex-row items-center p-8 justify-between mb-10" key={index}>
-                            <span className="font-bold text-2xl">{listing.name}</span>
+                            <span className="font-bold text-2xl">{space.name}</span>
                             <div className="flex flex-row items-center gap-6">
-                                <Button className="w-24 h-12 rounded-none bg-[#8559EC] font-bold " onClick={() => handleResume(listing.id)} >Resume</Button>
-                                <Trash2 onClick={() => handleDeleteSpace(listing.id)} />
+                                <Button className="w-24 h-12 rounded-none bg-[#8559EC] font-bold " onClick={() => handleResume(space.id)} >Resume</Button>
+                                <Trash2 onClick={() => handleDeleteSpace(space.id)} />
                             </div>
                         </div>))) : (
-                        <span className="text-xl font-medium text-gray-400">No Listings found :(</span>
+                        <span className="text-xl font-medium text-gray-400">No Spaces found :(</span>
                     )}
                 </div>
             </main>

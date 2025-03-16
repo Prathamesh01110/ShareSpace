@@ -29,7 +29,7 @@ export const fetchUser = async () => {
             image: true,
             accounts: false,
             sessions: true,
-            listings: true,
+            spaces: true,
         }
     });
 

@@ -4,18 +4,18 @@ import { NEXT_AUTH } from "../lib/auth";
 import prisma from "@/lib/prisma";
 import { UserSession } from "./fetchUser";
 
-export async function fetchListingsToEdit(listingId: string) {
+export async function fetchSpacesToEdit(spaceId: string) {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
     if (!session?.user?.id) {
         return null;
     }
     try {
-        const listing = await prisma.listing.findUnique({
+        const space = await prisma.space.findUnique({
             where: {
-                id: listingId,
+                id: spaceId,
             },
         })
-        return listing;
+        return space;
     }
     catch (error) {
         return error;

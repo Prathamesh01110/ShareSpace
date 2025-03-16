@@ -9,8 +9,8 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createSpaceDetails } from "@/app/actions/spaceDetails"
 import { useEffect, useState } from "react"
-import { fetchListingsToEdit } from "@/app/actions/fetchListingToEdit"
-import { Listing } from "@prisma/client"
+import { fetchSpacesToEdit } from "@/app/actions/fetchSpacesToEdit"
+import { Space as SpaceValues } from "@prisma/client"
 import { Loader2 } from "lucide-react"
 
 const spaceFormSchema = z.object({
@@ -37,7 +37,7 @@ const PARKING_OPTIONS = [
 export default function Space({ params }: {
     params: { id: string }
 }) {
-    const listingId = params.id;
+    const spaceId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
     const {
@@ -60,34 +60,34 @@ export default function Space({ params }: {
     })
 
     useEffect(() => {
-        async function getListingsToEdit() {
+        async function getSpacesToEdit() {
             try {
-                if (listingId !== 'new') {
-                    const listingData = await fetchListingsToEdit(listingId) as Listing;
-                    console.log("Listing Data", listingData);
+                if (spaceId !== 'new') {
+                    const spaceData = await fetchSpacesToEdit(spaceId) as SpaceValues;
+                    console.log("Space Data", spaceData);
                     reset({
-                        spaceType: listingData?.typeOfSpace || '',
-                        overnightStays: listingData?.overNightStays || false,
-                        hasParking: listingData?.hasParking || false,
-                        parkingOptions: listingData?.parkingOptions || [],
-                        parkingDescription: listingData?.parkingDescription || '',
-                        hasSecurityCameras: listingData?.securityCameras || false,
+                        spaceType: spaceData?.typeOfSpace || '',
+                        overnightStays: spaceData?.overNightStays || false,
+                        hasParking: spaceData?.hasParking || false,
+                        parkingOptions: spaceData?.parkingOptions || [],
+                        parkingDescription: spaceData?.parkingDescription || '',
+                        hasSecurityCameras: spaceData?.securityCameras || false,
                     })
                 }
             } catch (error) {
-                console.error('Error fetching listing:', error);
+                console.error('Error fetching space:', error);
             }
         }
-        getListingsToEdit();
-    }, [listingId, reset])
+        getSpacesToEdit();
+    }, [spaceId, reset])
     const hasParking = watch("hasParking")
 
     async function onSubmit(data: SpaceFormValues) {
         setIsSubmitting(true)
         console.log("Form submitted:", data)
         try {
-            await createSpaceDetails(data, listingId);
-            router.push(`/becomeHost/typeOfSpace/${listingId}`);
+            await createSpaceDetails(data, spaceId);
+            router.push(`/becomeHost/typeOfSpace/${spaceId}`);
         }
         catch (error) {
             console.error("Error submitting form:", error);
@@ -109,7 +109,7 @@ export default function Space({ params }: {
             <div className="w-[58%] pt-32 flex-col flex mx-auto ">
                 <form className="space-y-8">
                     <div className="flex flex-col space-y-4 w-full">
-                        <span className="text-3xl font-bold">What type of space are you listing?</span>
+                        <span className="text-3xl font-bold">What type of space are you space?</span>
                         <span className="text-sm font-normal">Enter the type of space that most closely represents the physical space being listed</span>
                         <span className="text-sm font-normal">Examples: 'Apartment' 'Photo Studio' 'Restaurant'</span>
                         <Input
@@ -278,7 +278,7 @@ export default function Space({ params }: {
 
                     <hr className="border-t border-gray-200 mt-16 mb-10" />
                     <div className="w-full flex justify-between pb-16">
-                        <Link href={`/becomeHost/address/${listingId}`}>
+                        <Link href={`/becomeHost/address/${spaceId}`}>
                             <Button variant={"outline"} className="text-md font-semibold" >Back</Button>
                         </Link>
                         <Button

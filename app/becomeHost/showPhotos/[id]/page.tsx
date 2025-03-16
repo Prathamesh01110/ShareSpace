@@ -1,6 +1,6 @@
 'use client'
 import { fetchListingDetails } from "@/app/actions/fetchListingDetails";
-import { fetchListingsToEdit } from "@/app/actions/fetchListingToEdit";
+import { fetchListingsToEdit } from "@/app/actions/fetchSpacesToEdit";
 import { Listing } from "@prisma/client";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";

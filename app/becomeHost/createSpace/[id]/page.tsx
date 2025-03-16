@@ -2,7 +2,7 @@ import { fetchProgress } from "@/app/actions/fetchProgress";
 import { UserSession } from "@/app/actions/fetchUser";
 import { NEXT_AUTH } from "@/app/lib/auth";
 import { Button } from "@/components/ui/button";
-import { ListingProgress } from "@prisma/client";
+import { SpaceProgress } from "@prisma/client";
 import { Check } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -11,8 +11,8 @@ import { Progress } from "@/components/ui/progress";
 type ButtonState = "edit" | "start" | "none";
 
 export default async function CreateSpace({ params }: { params: { id: string } }) {
-    const listingId = params.id;
-    const progress = await fetchProgress(listingId) as ListingProgress;
+    const spaceId = params.id;
+    const progress = await fetchProgress(spaceId) as SpaceProgress;
     const session = await getServerSession(NEXT_AUTH) as UserSession;
 
     const title = [
@@ -26,7 +26,7 @@ export default async function CreateSpace({ params }: { params: { id: string } }
         "Activities",
         "Policies"
     ]
-    const sections: Array<keyof ListingProgress> = [
+    const sections: Array<keyof SpaceProgress> = [
         "addressCompleted",
         "spaceDetailsCompleted",
         "typeOfSpaceCompleted",
@@ -50,9 +50,9 @@ export default async function CreateSpace({ params }: { params: { id: string } }
    ]
 
     const completedSections = sections.filter(section => progress?.[section]).length;
-    const progressPercentage = (completedSections / sections.length) * 100;
+    const progressPercentage = Math.ceil((completedSections / sections.length) * 100);
 
-    const shouldShowButton = (currentSection: keyof ListingProgress): ButtonState => {
+    const shouldShowButton = (currentSection: keyof SpaceProgress): ButtonState => {
         if (progress?.[currentSection]) return "edit";
 
         const currentIndex = sections.indexOf(currentSection);
@@ -65,12 +65,12 @@ export default async function CreateSpace({ params }: { params: { id: string } }
         return "none";
     };
 
-    const renderButton = (section: keyof ListingProgress, path: string) => {
+    const renderButton = (section: keyof SpaceProgress, path: string) => {
         const buttonState = shouldShowButton(section);
         if (buttonState === "none") return null;
 
         return (
-            <Link href={`/becomeHost/${path}/${listingId}`}>
+            <Link href={`/becomeHost/${path}/${spaceId}`}>
                 <Button
                     className={`w-24 h-12 rounded-none ${buttonState === "edit" ? "text-[#8559EC]" : "bg-[#8559EC]"} font-bold`}
                     variant={buttonState === "edit" ? "outline" : "default"}
@@ -85,7 +85,7 @@ export default async function CreateSpace({ params }: { params: { id: string } }
         number: number,
         title: string,
         description: string,
-        section: keyof ListingProgress,
+        section: keyof SpaceProgress,
         path: string
     ) => (
         <>

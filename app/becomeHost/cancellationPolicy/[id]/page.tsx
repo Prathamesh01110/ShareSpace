@@ -8,9 +8,9 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { createCancellationPolicy } from '@/app/actions/cancellationPolicy';
-import { fetchListingsToEdit } from '@/app/actions/fetchListingToEdit';
-import { Listing } from '@prisma/client';
+import { Space } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
+import { fetchSpacesToEdit } from '@/app/actions/fetchSpacesToEdit';
 
 interface Policy {
     name: string;
@@ -92,10 +92,10 @@ export default function CancellationPolicy({params}:{params:{id:string}}) {
         }
     };
     useEffect(() => {
-        async function getListingsToEdit() {
+        async function getSpacesToEdit() {
             try {
                 if (listingId !== 'new') {
-                    const listingData = await fetchListingsToEdit(listingId) as Listing;
+                    const listingData = await fetchSpacesToEdit(listingId) as Space;
                     console.log("cancellationPolicy: ", listingData.cancellationPolicy);
                     reset({
                         cancellationPolicy: listingData?.cancellationPolicy || ''
@@ -105,7 +105,7 @@ export default function CancellationPolicy({params}:{params:{id:string}}) {
                 console.error('Error fetching listing:', error);
             }
         }
-        getListingsToEdit();
+        getSpacesToEdit();
     }, [listingId, reset])
 
 

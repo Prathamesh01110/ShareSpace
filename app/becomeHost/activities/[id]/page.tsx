@@ -13,7 +13,7 @@ import { useState } from "react";
 
 
 export default function Activities({ params }: { params: { id: string } }) {
-    const listingId = params.id;
+    const spaceId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
     const formProps = useActivitiesForm();
@@ -21,8 +21,8 @@ export default function Activities({ params }: { params: { id: string } }) {
     const onSubmit = async (data: ActivitiesSchema) => {
         setIsSubmitting(true);
         try {
-            await createActivity(data, listingId);
-            router.push(`/becomeHost/policies/${listingId}`);
+            await createActivity(data, spaceId);
+            router.push(`/becomeHost/policies/${spaceId}`);
         } catch (error) {
             console.error("Error submitting form: ", error);
         } finally {
@@ -42,7 +42,7 @@ export default function Activities({ params }: { params: { id: string } }) {
         <main>
             <div className="w-[58%] pt-32 flex-col flex mx-auto">
                 <h1 className="text-3xl font-bold pb-4">Which activities would you like to host?</h1>
-                <span className="text-gray-800 text-sm w-2/3 pb-4">Select the types of activities you would like to host. For each selection, we’ll create a customized listing unique to that activity.</span>
+                <span className="text-gray-800 text-sm w-2/3 pb-4">Select the types of activities you would like to host. For each selection, we’ll create a customized space unique to that activity.</span>
                 <FormProvider {...formProps}>
                     <div className="gap-4 flex flex-row w-full">
                         <div className="w-full">
@@ -61,7 +61,7 @@ export default function Activities({ params }: { params: { id: string } }) {
                 )}
                 <hr className="border-t border-gray-200 mt-16 mb-10" />
                 <div className="w-full flex justify-between mb-16">
-                    <Link href={`/becomeHost/cancellationPolicy/${listingId}`}>
+                    <Link href={`/becomeHost/cancellationPolicy/${spaceId}`}>
                         <Button variant="outline" className="text-md font-semibold">Back</Button>
                     </Link>
                     <Button

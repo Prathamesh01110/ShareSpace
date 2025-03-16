@@ -31,7 +31,7 @@ interface PhotoItem {
 }
 
 export default function UploadPhotos({ params }: { params: { id: string } }) {
-    const listingId = params.id;
+    const spaceId = params.id;
     const router = useRouter();
     const [photosList, setPhotosList] = useState<PhotoItem[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -124,10 +124,10 @@ export default function UploadPhotos({ params }: { params: { id: string } }) {
                 formData.append("files", photo.file);
             });
 
-            const uploadedUrls = await uploadPhotos(formData, listingId);
+            const uploadedUrls = await uploadPhotos(formData, spaceId);
             console.log("Uploaded URLs:", uploadedUrls); // Display or use these URLs
 
-            router.push(`/becomeHost/operatingHours/${listingId}`);
+            router.push(`/becomeHost/operatingHours/${spaceId}`);
         } catch (error) {
             console.error("Error uploading photos:", error);
         } finally {
@@ -238,7 +238,7 @@ export default function UploadPhotos({ params }: { params: { id: string } }) {
                 </span>
                 <hr className="border-t border-gray-200 mt-16 mb-10" />
                 <div className="w-full flex justify-between mb-16">
-                    <Link href={`/becomeHost/typeOfSpace/${listingId}`}>
+                    <Link href={`/becomeHost/typeOfSpace/${spaceId}`}>
                         <Button variant="outline" className="text-md font-semibold">Back</Button>
                     </Link>
                     <Button

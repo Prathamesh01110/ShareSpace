@@ -38,7 +38,7 @@ export type OperatingHoursValues = z.infer<typeof operatingHoursSchema>
 export default function OperatingHours({ params }: {
     params: { id: string }
 }) {
-    const listingId = params.id;
+    const spaceId = params.id;
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const defaultValues: OperatingHoursValues = {
@@ -65,8 +65,8 @@ export default function OperatingHours({ params }: {
     async function onSubmit(data: OperatingHoursValues) {
         setIsSubmitting(true);
         try {
-            await createOperatingHours(data, listingId);
-            router.push(`/becomeHost/healthAndSafety/${listingId}`);
+            await createOperatingHours(data, spaceId);
+            router.push(`/becomeHost/healthAndSafety/${spaceId}`);
         } catch (error) {
             console.error("Error isSubmitting form", error);
         }finally{
@@ -208,7 +208,7 @@ export default function OperatingHours({ params }: {
 
                     <hr className="border-t border-gray-200 mt-16 mb-10" />
                     <div className="w-full flex justify-between mb-16">
-                        <Link href={`/becomeHost/uploadPhotos/${listingId}`}>
+                        <Link href={`/becomeHost/uploadPhotos/${spaceId}`}>
                             <Button variant={"outline"} className="text-md font-semibold" >Back</Button>
                         </Link>
                         <Button

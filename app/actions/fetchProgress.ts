@@ -4,16 +4,16 @@ import prisma from "@/lib/prisma";
 import { NEXT_AUTH } from "../lib/auth";
 import { UserSession } from "./fetchUser";
 
-export const fetchProgress = async (listingId: string) => {
+export const fetchProgress = async (spaceId: string) => {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
 
     if (!session?.user?.id) {
         return null;
     }
 
-    const progress = await prisma.listingProgress.findUnique({
+    const progress = await prisma.spaceProgress.findUnique({
         where: {
-            listingId: listingId,
+            spaceId: spaceId,
         },
         select: {
             addressCompleted: true,

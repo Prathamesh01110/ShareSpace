@@ -8,13 +8,13 @@ export async function createSpace() {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
     if (!session) return { error: "Unauthorized" };
     try {
-        const listing = await prisma?.listing?.create({
+        const space = await prisma?.space?.create({
             data: {
                 userId: session?.user?.id || " ",
                 name: "Untitled",
             }
         })
-        return listing;
+        return space;
     } catch (error) {
         return error;
     }

@@ -7,15 +7,15 @@ import { OperatingHoursValues } from "../becomeHost/operatingHours/[id]/page";
 import { DayOfWeek } from "@prisma/client";
 
 
-export async function createOperatingHours(data: OperatingHoursValues, listingId: string) {
+export async function createOperatingHours(data: OperatingHoursValues, spaceId: string) {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
     if (!session) return { error: "Unauthorized" };
-    const listing = await prisma?.listing?.findUnique({
+    const space = await prisma?.space?.findUnique({
         where: {
-            id: listingId,
+            id: spaceId,
         }
     });
-    if (!listing || listing.userId !== session?.user?.id) {
+    if (!space || space.userId !== session?.user?.id) {
         return null;
     }
     try {
@@ -26,9 +26,9 @@ export async function createOperatingHours(data: OperatingHoursValues, listingId
             closeTime: schedule.closeTime
         }));
 
-        await prisma?.listing?.update({
+        await prisma?.space?.update({
             where: {
-                id: listingId,
+                id: spaceId,
             },
             data: {
                 operatingHours: {

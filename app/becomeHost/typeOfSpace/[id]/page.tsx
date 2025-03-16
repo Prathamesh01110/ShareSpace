@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createTypeOfSpace } from '@/app/actions/typeOfSpace';
-import { fetchListingsToEdit } from '@/app/actions/fetchListingToEdit';
-import { Listing } from '@prisma/client';
+import { Space } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
+import { fetchSpacesToEdit } from '@/app/actions/fetchSpacesToEdit';
 
-const listingSchema = z.object({
+const spaceSchema = z.object({
     spaceTitle: z.string().min(10, "Title must be at least 10 characters long"),
     spaceDescription: z.string().min(350, "Description must be at least 350 characters long"),
     bookingSize: z.coerce.number().min(1, "Size must be greater than 0"),
@@ -23,12 +23,12 @@ const listingSchema = z.object({
     arrivalInstructions: z.string().min(20, "Arrival instructions must be at least 20 characters long")
 });
 
-export type ListingFormData = z.infer<typeof listingSchema>;
+export type SpaceFormData = z.infer<typeof spaceSchema>;
 
-export default function ShareSpaceListing({ params }: {
+export default function ShareSpaceSpace({ params }: {
     params: { id: string }
 }) {
-    const listingId = params.id;
+    const spaceId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
     const {
@@ -36,8 +36,8 @@ export default function ShareSpaceListing({ params }: {
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<ListingFormData>({
-        resolver: zodResolver(listingSchema),
+    } = useForm<SpaceFormData>({
+        resolver: zodResolver(spaceSchema),
         defaultValues: {
             spaceTitle: '',
             spaceDescription: '',
@@ -50,35 +50,35 @@ export default function ShareSpaceListing({ params }: {
         }
     });
     useEffect(() => {
-        async function getListingsToEdit() {
+        async function getSpacesToEdit() {
             try {
-                if (listingId !== 'new') {
-                    const listingData = await fetchListingsToEdit(listingId) as Listing;
-                    console.log("Listing Data", listingData);
+                if (spaceId !== 'new') {
+                    const spaceData = await fetchSpacesToEdit(spaceId) as Space;
+                    console.log("Space Data", spaceData);
                     reset({
-                        spaceTitle: listingData?.name || '',
-                        spaceDescription: listingData?.description || '',
-                        bookingSize: listingData?.size || undefined,
-                        houseRules: listingData?.rules || '',
-                        allowedGuests: listingData?.age || 'All ages',
-                        wifiName: listingData?.wifiName || '',
-                        wifiPassword: listingData?.wifiPassword || '',
-                        arrivalInstructions: listingData?.arrivalInstructions || ''
+                        spaceTitle: spaceData?.name || '',
+                        spaceDescription: spaceData?.description || '',
+                        bookingSize: spaceData?.size || undefined,
+                        houseRules: spaceData?.rules || '',
+                        allowedGuests: spaceData?.age || 'All ages',
+                        wifiName: spaceData?.wifiName || '',
+                        wifiPassword: spaceData?.wifiPassword || '',
+                        arrivalInstructions: spaceData?.arrivalInstructions || ''
                     })
                 }
             } catch (error) {
-                console.error('Error fetching listing:', error);
+                console.error('Error fetching space:', error);
             }
         }
-        getListingsToEdit();
-    }, [listingId, reset])
+        getSpacesToEdit();
+    }, [spaceId, reset])
 
-    async function onSubmit(data: ListingFormData) {
+    async function onSubmit(data: SpaceFormData) {
         setIsSubmitting(true);
         console.log('Form submitted with data:', data);
         try {
-            await createTypeOfSpace(data, listingId);
-            router.push(`/becomeHost/uploadPhotos/${listingId}`);
+            await createTypeOfSpace(data, spaceId);
+            router.push(`/becomeHost/uploadPhotos/${spaceId}`);
         }
         catch (error) {
             console.error("Error submitting form:", error);
@@ -268,7 +268,7 @@ export default function ShareSpaceListing({ params }: {
 
                         <hr className="border-t border-gray-200 mt-16 mb-10" />
                         <div className="w-full flex justify-between mb-16">
-                            <Link href={`/becomeHost/spaceDetails/${listingId}`}>
+                            <Link href={`/becomeHost/spaceDetails/${spaceId}`}>
                                 <Button variant={"outline"} className="text-md font-semibold" >Back</Button>
                             </Link>
                             <Button

@@ -17,9 +17,9 @@ import {
 } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { createPolicy } from "@/app/actions/policies";
-import { fetchListingsToEdit } from "@/app/actions/fetchListingToEdit";
-import { Listing } from "@prisma/client";
+import { Space } from "@prisma/client";
 import { Loader2 } from "lucide-react";
+import { fetchSpacesToEdit } from "@/app/actions/fetchSpacesToEdit";
 
 interface PolicyItem {
     name: string;
@@ -63,11 +63,11 @@ export default function Policy({ params }: { params: { id: string } }) {
             policiesAccepted: false,
         },
     }); useEffect(() => {
-        async function getListingsToEdit() {
+        async function getSpacesToEdit() {
             try {
                 if (listingId !== 'new') {
-                    const listingData = await fetchListingsToEdit(listingId) as Listing;
-                    console.log("Listing Data", listingData);
+                    const listingData = await fetchSpacesToEdit(listingId) as Space;
+                    console.log("Space Data", listingData);
                     form.reset({
                         policiesAccepted: listingData?.agreesToPolicies || false,
                     })
@@ -76,13 +76,13 @@ export default function Policy({ params }: { params: { id: string } }) {
                 console.error('Error fetching listing:', error);
             }
         }
-        getListingsToEdit();
+        getSpacesToEdit();
     }, [listingId, form.reset])
     async function onSubmit(data: PolicyFormValues) {
         setIsSubmitting(true);
         try {
             await createPolicy(data, listingId);
-            router.push(`/becomeHost/showListing/${listingId}`);
+            router.push(`/becomeHost/showSpace/${listingId}`);
         } catch (error) {
             console.error('error submitting form:', error);
         } finally {

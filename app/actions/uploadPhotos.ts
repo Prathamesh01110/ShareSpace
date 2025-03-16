@@ -4,27 +4,25 @@ import { NEXT_AUTH } from "../lib/auth"
 import { UserSession } from "./fetchUser";
 import prisma from "@/lib/prisma";
 import { BlobServiceClient } from '@azure/storage-blob';
-import { UploadPhotosValues } from "../becomeHost/uploadPhotos/[id]/page";
 
-
-export async function uploadPhotos(formData: FormData, listingId: string) {
+export async function uploadPhotos(formData: FormData, spaceId: string) {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
     if (!session) return { error: "Unauthorized" };
 
     const files = formData.getAll("files") as File[];
-    const listing = await prisma?.listing?.findUnique({
+    const space = await prisma?.space?.findUnique({
         where: {
-            id: listingId,
+            id: spaceId,
         }
     });
-    if (!listing || listing.userId !== session?.user?.id) {
+    if (!space || space.userId !== session?.user?.id) {
         return null;
     }
     try {
         const uploadedUrls = await uploadToAzureBlobStorage(files);
-        await prisma?.listing?.update({
+        await prisma?.space?.update({
             where: {
-                id: listingId,
+                id: spaceId,
             },
             data: {
                 photos: uploadedUrls,

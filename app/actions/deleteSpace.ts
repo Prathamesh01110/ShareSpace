@@ -5,13 +5,13 @@ import { NEXT_AUTH } from "../lib/auth";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function deleteSpace(listingId: string) {
+export async function deleteSpace(spaceId: string) {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
     if (!session) return null;
     try {
-        await prisma?.listing?.delete({
+        await prisma?.space?.delete({
             where: {
-                id: listingId,
+                id: spaceId,
             },
         });
         revalidatePath("/becomeHost");

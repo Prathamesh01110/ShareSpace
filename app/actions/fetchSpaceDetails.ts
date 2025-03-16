@@ -4,23 +4,23 @@ import { NEXT_AUTH } from "../lib/auth";
 import prisma from "@/lib/prisma";
 import { UserSession } from "./fetchUser";
 
-export async function fetchListingDetails(listingId: string) {
+export async function fetchListingDetails(spaceId: string) {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
     if (!session?.user?.id) {
         return null;
     }
     try {
-        const listing = await prisma.listing.findUnique({
+        const space = await prisma.space.findUnique({
             where: {
-                id: listingId,
+                id: spaceId,
             },
         })
         const operatingHours = await prisma.operatingHours.findMany({
             where: {
-                listingId: listingId,
+                spaceId: spaceId,
             },
         });
-        return [listing, operatingHours];
+        return [space, operatingHours];
     }
     catch (error) {
         return error;

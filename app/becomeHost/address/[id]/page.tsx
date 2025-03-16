@@ -10,9 +10,9 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { createAddress } from '@/app/actions/address';
 import { useRouter } from 'next/navigation';
-import { Listing } from '@prisma/client';
-import { fetchListingsToEdit } from '@/app/actions/fetchListingToEdit';
+import { Space } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
+import { fetchSpacesToEdit } from '@/app/actions/fetchSpacesToEdit';
 
 const addressSchema = z.object({
     country: z.string(),
@@ -31,7 +31,7 @@ export type FormAddress = z.infer<typeof addressSchema>;
 const CreateAddress = ({ params }: {
     params: { id: string }
 }) => {
-    const listingId = params.id;
+    const spaceId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
     const {
@@ -54,8 +54,8 @@ const CreateAddress = ({ params }: {
     useEffect(() => {
         async function getListingsToEdit() {
             try {
-                if (listingId !== 'new') {
-                    const listingData = await fetchListingsToEdit(listingId) as Listing;
+                if (spaceId !== 'new') {
+                    const listingData = await fetchSpacesToEdit(spaceId) as Space;
                     console.log("Listing Data", listingData);
                     reset({
                         country: 'India',
@@ -71,15 +71,15 @@ const CreateAddress = ({ params }: {
             }
         }
         getListingsToEdit();
-    }, [listingId, reset])
+    }, [spaceId, reset])
     async function onSubmit(data: FormAddress) {
         setIsSubmitting(true);
         try {
-            const newListingId = await createAddress(data, listingId) as string;
+            const newListingId = await createAddress(data, spaceId) as string;
             router.push(`/becomeHost/spaceDetails/${newListingId}`)
         } catch (error) {
             console.error('Error submitting form:', error);
-        }finally{
+        } finally {
             setIsSubmitting(false);
         }
     }
@@ -201,7 +201,7 @@ const CreateAddress = ({ params }: {
 
                         <hr className="border-t border-gray-200 mt-16 mb-10" />
                         <div className="w-full flex justify-between mb-16">
-                            <Link href={`/becomeHost/createSpace/${listingId}`}>
+                            <Link href={`/becomeHost/createSpace/${spaceId}`}>
                                 <Button variant="outline" className="text-md font-semibold">Back</Button>
                             </Link>
                             <Button

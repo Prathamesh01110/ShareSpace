@@ -1,19 +1,19 @@
 'use server'
 import prisma from "@/lib/prisma";
 
-export async function fetchListingForSpaces(listingId: string) {
+export async function fetchListingForSpaces(spaceId: string) {
     try {
-        const listing = await prisma.listing.findUnique({
+        const space = await prisma.space.findUnique({
             where: {
-                id: listingId,
+                id: spaceId,
             },
         })
         const operatingHours = await prisma.operatingHours.findMany({
             where: {
-                listingId: listingId,
+                spaceId: spaceId,
             },
         });
-        return [listing, operatingHours];
+        return [space, operatingHours];
     }
     catch (error) {
         return error;

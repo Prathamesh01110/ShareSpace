@@ -7,23 +7,23 @@ import prisma from "@/lib/prisma";
 import { PolicyFormValues } from "../becomeHost/policies/[id]/page";
 
 
-export async function createPolicy(data: PolicyFormValues, listingId: string) {
+export async function createPolicy(data: PolicyFormValues, spaceId: string) {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
     if (!session) return { error: "Unauthorized" };
     const { policiesAccepted } = data;
     console.log(data);
-    const listing = await prisma?.listing?.findUnique({
+    const space = await prisma?.space?.findUnique({
         where: {
-            id: listingId,
+            id: spaceId,
         }
     });
-    if (!listing || listing.userId !== session?.user?.id) {
+    if (!space || space.userId !== session?.user?.id) {
         return null;
     }
     try {
-        await prisma?.listing?.update({
+        await prisma?.space?.update({
             where: {
-                id: listingId,
+                id: spaceId,
             },
             data: {
                 agreesToPolicies: policiesAccepted,
