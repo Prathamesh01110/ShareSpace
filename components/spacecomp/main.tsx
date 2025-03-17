@@ -19,7 +19,12 @@ interface ListingData extends Listing {
     }
 }
 
-function Main() {
+type SearchItem = {
+    name: string;
+    id: string;
+};
+
+function Main({ setSearchData }: { setSearchData: (data: SearchItem[]) => void }) {
     const [showMap, setShowMap] = useState(true);
     const [listings, setListings] = useState<ListingData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +43,10 @@ function Main() {
             console.log(data);
             setPhotoIndices(initialIndices);
             setListings(data);
+            setSearchData(data.map((listing) => ({
+                name: listing.space.name,
+                id: listing.id
+            })));            
             setIsLoading(false);
         }
         loadListings();
@@ -78,11 +87,16 @@ function Main() {
                         const currentIndex = photoIndices[listing.id] || 0;
 
                         return (
-                            <div
-                                key={listing.id}
-                                className="group relative cursor-pointer"
-                                onClick={() => router.push(`/spaces/showListing/${listing.id}`)}
-                            >
+<div
+    key={listing.id}
+    className="group relative cursor-pointer"
+    onClick={() => {
+        const url = `${window.location.origin}/spaces/showListing/${listing.id}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
+    }}
+>
+
+                        
                                 <div className="group relative">
                                     <div className="aspect-square overflow-hidden rounded-xl">
                                         <img
@@ -152,6 +166,7 @@ function Main() {
                 </div>
 
                 {/* Map component section commented out in your original code */}
+                {/* okay get me back that code working */}
             </div>
         </div>
     );

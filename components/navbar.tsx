@@ -10,13 +10,20 @@ import { LogoutButton } from "./authUi"
 import { fetchUser } from "@/app/actions/fetchUser"
 import Signup from "@/components/spacecomp/signup"
 import { useRouter } from "next/navigation"
-
-export default function Navbar() {
+type SearchItem = {
+    name: string;
+    id: string;
+};
+export default function Navbar({ searchData = [] }: { searchData: SearchItem[] }) {
     const router = useRouter();
     const [loginPopup, showLoginPopup] = useState(false);
     const [user, setUser] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [query, setQuery] = useState("");
+    const filteredResults = searchData.filter((item) =>
+        item.name.toLowerCase().includes(query.toLowerCase())
+    );
 
     useEffect(() => {
         fetchUser()
@@ -54,7 +61,6 @@ export default function Navbar() {
         }
     };
 
-    // Close mobile menu when route changes
     useEffect(() => {
         setMobileMenuOpen(false);
     }, [pathname]);
@@ -76,14 +82,37 @@ export default function Navbar() {
                         <span className="text-2xl sm:text-4xl font-bold text-white p-1 sm:p-3">SpaceShare</span>
                     </Link>
                     {pathname !== "/" && !mobileMenuOpen && (
-                        <div className="hidden md:flex bg-gray-800 rounded-lg px-4 py-2 space-x-2 w-80">
-                            <Search className="text-gray-500" size={18} />
-                            <input
-                                type="text"
-                                placeholder="Search for spaces..."
-                                className="w-full outline-none text-white bg-gray-800"
-                            />
-                        </div>
+                         <div className="hidden md:flex bg-gray-800 rounded-lg px-4 py-2 space-x-2 w-80 relative">
+                         <Search className="text-gray-500" size={18} />
+                         <input
+                             type="text"
+                             placeholder="Search for spaces..."
+                             className="w-full outline-none text-white bg-gray-800"
+                             value={query}
+                             onChange={(e) => setQuery(e.target.value)}
+                         />
+                         {query && (
+                             <div className="absolute top-12 left-0 w-full bg-white text-black shadow-lg rounded-lg max-h-60 overflow-auto">
+                                 {filteredResults.length > 0 ? (
+                                     filteredResults.map((item) => (
+                                         <div
+                                             key={item.id}
+                                             className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+                                             onClick={() => {
+                                                 setQuery(item.name);
+                                                 const url = `${window.location.origin}/spaces/showListing/${item.id}`;
+                                                 window.open(url, "_blank", "noopener,noreferrer");
+                                             }}
+                                         >
+                                             {item.name}
+                                         </div>
+                                     ))
+                                 ) : (
+                                     <div className="px-4 py-2 text-gray-500">No results found</div>
+                                 )}
+                             </div>
+                         )}
+                     </div>
                     )}
                 </div>
 
