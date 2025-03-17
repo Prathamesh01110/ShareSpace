@@ -19,6 +19,7 @@ export default function Activities({ params }: { params: { id: string } }) {
     const formProps = useActivitiesForm();
     const { handleSubmit, formState: { errors } } = formProps;
     const onSubmit = async (data: ActivitiesSchema) => {
+        console.log("onsubmit");
         setIsSubmitting(true);
         try {
             await createActivity(data, spaceId);
