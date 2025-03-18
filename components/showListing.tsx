@@ -164,7 +164,7 @@ export default function ShowListing({
 
                                 </div>
                             </div>
-                            <div className="flex flex-row gap-2 pb-8 pt-6">
+                            <div className="flex flex-row gap-2 pb-8 sm:pt-0 pt-6">
                                 <img src={listing?.space.photos[0]} alt={"image"} className="md:w-1/2 h-[550px] rounded-sm object-cover" onClick={() => router.push(`/spaces/showPhotos/${listingId}`)}/>
                                 <div className="md:grid grid-cols-2 gap-2 hidden w-1/2 h-[550px]  ">
                                     <img src={listing?.space.photos[1]} alt={"image"} className="h-full w-full  rounded-sm object-cover" onClick={() => router.push(`/spaces/showPhotos/${listingId}`)}/>

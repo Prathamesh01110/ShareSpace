@@ -103,7 +103,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
         const startHour = allTimes.find(t => t.time === startTime)?.hour || 0;
 
         return allTimes.map(item => {
-            const isValid = item.hour > startHour && item.hour >= startHour + minimumHours && item.available;
+            const isValid = item.hour > startHour && item.hour >= startHour && item.available;
             return {
                 ...item,
                 available: isValid
@@ -118,7 +118,6 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
         const endHour = allTimes.find(t => t.time === endTime)?.hour || 0;
         const hours = endHour - startHour;
 
-        if (hours < minimumHours) return null;
 
         const attendees = parseInt(customAttendees) || 1;
         const pricePerHour = spaceData?.hourlyRate || 1;
@@ -185,9 +184,6 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
             return "This date is not available for booking";
         }
 
-        if (startTime && endTime && !meetsMinimumHours()) {
-            return `Minimum booking duration is ${minimumHours} hour${minimumHours > 1 ? 's' : ''}`;
-        }
 
         return "";
     };
@@ -201,7 +197,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
             return;
         }
 
-        if (!isDateAvailable() || !meetsMinimumHours()) {
+        if (!isDateAvailable()) {
             setSubmitError(errorMessage);
             return;
         }
@@ -348,7 +344,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
                                 value={endTime}
                                 disabled={!startTime || !isDateAvailable()}
                             >
-                                <SelectTrigger className={`rounded-none h-12 ${startTime && endTime && !meetsMinimumHours() ? 'border-red-500' : ''}`}>
+                                <SelectTrigger className={`rounded-none h-12 `}>
                                     <SelectValue placeholder="end time" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -435,7 +431,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
 
                 <Button
                     className="w-full bg-[#8559EC] text-lg hover:bg-[#5838A2] rounded-none p-6 font-medium"
-                    disabled={!totalData || !isDateAvailable() || !meetsMinimumHours() || isSubmitting}
+                    disabled={!totalData || !isDateAvailable()|| isSubmitting}
                     onClick={handleSubmitBooking}
                 >
                     {isSubmitting ? (
@@ -447,7 +443,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
                             Processing...
                         </span>
                     ) : (
-                        spaceData?.instantBooking === 'EVERYONE' ? "Book Now" : "Request to Book"
+                        spaceData?.instantBooking === 'EVERYONE' && meetsMinimumHours()? "Book Now" : "Request to Book"
                     )}
                 </Button>
 
