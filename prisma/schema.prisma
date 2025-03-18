@@ -44,21 +44,59 @@ model Space {
 }
 
 model Listing {
-    id              String        @id @default(cuid())
+    id              String         @id @default(cuid())
     spaceId         String
-    type            ListingType?
-    hourlyRate      Int?
-    minimumHours    Int?
-    discount        Int?
-    cleaningRate    CleaningRate?
-    additionalFee   Int?
-    instantBooking  Booking?
+    type            ListingType
+    hourlyRate      Int
+    minimumHours    Int
+    discount        Int
+    cleaningRate    CleaningRate
+    additionalFee   Int
+    instantBooking  InstantBooking
     amenities       Amenities[]
-    capacity        Int?
+    capacity        Int
     customAmenities String[]
-    space           Space         @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+    space           Space          @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+    bookings        Booking[]
 
     @@unique([spaceId, type], name: "spaceId_type")
+}
+
+model Booking {
+    id                 String        @id @default(cuid())
+    listingId          String
+    userId             String
+    date               DateTime
+    startTime          Int
+    endTime            Int
+    attendees          Int
+    totalPrice         Int
+    subtotal           Int
+    processingFee      Int
+    discountAmount     Int
+    hours              Int
+    status             BookingStatus @default(PENDING)
+    paymentStatus      PaymentStatus @default(UNPAID)
+    cancellationReason String?
+    createdAt          DateTime      @default(now())
+    updatedAt          DateTime      @updatedAt
+    user               User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    listing            Listing       @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+enum BookingStatus {
+    PENDING
+    CONFIRMED
+    COMPLETED
+    CANCELLED
+    REJECTED
+}
+
+enum PaymentStatus {
+    UNPAID
+    PAID
+    REFUNDED
+    PARTIAL_REFUND
 }
 
 model SpaceProgress {
@@ -99,6 +137,7 @@ model User {
     Authenticator Authenticator[]
     spaces        Space[]
     sessions      Session[]
+    bookings      Booking[]
 }
 
 model Account {
@@ -208,7 +247,7 @@ enum CleaningRate {
     ADDITIONAL
 }
 
-enum Booking {
+enum InstantBooking {
     EVERYONE
     NONE
 }

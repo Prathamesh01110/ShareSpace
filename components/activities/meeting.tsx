@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Amenities, Booking, CleaningRate } from "@prisma/client";
+import { Amenities, CleaningRate, InstantBooking } from "@prisma/client";
 import { CircleCheck, Hourglass, User } from "lucide-react";
 import { useState } from "react";
 import { Controller, useFormContext} from "react-hook-form";
@@ -186,12 +186,12 @@ export default function Meeting() {
                         render={({ field }) => (
                             <RadioGroup value={field.value} onValueChange={field.onChange} defaultValue="comfortable" className=" flex flex-col text-[#201939] pt-4">
                                 <div className="flex items-center space-x-4">
-                                    <RadioGroupItem id="r1" className="border-gray-400" value={Booking.EVERYONE} />
+                                    <RadioGroupItem id="r1" className="border-gray-400" value={InstantBooking.EVERYONE} />
                                     <Label htmlFor="r1" className="font-bold">Everyone</Label>
                                 </div>
                                 <span className="text-sm text-gray-500 pl-8 gap-2 flex flex-wrap pb-4">Guests who acknowledge and accept your host rules can book instantly.</span>
                                 <div className="flex items-center space-x-4">
-                                    <RadioGroupItem id="r3" className="border-gray-400" value={Booking.NONE} />
+                                    <RadioGroupItem id="r3" className="border-gray-400" value={InstantBooking.NONE} />
                                     <Label htmlFor="r3" className="font-bold">No one</Label>
                                 </div>
                                 <span className="text-sm text-gray-500 pl-8 gap-2 flex flex-wrap ">Booking requests will need to be manually accepted or declined.</span>

@@ -1,6 +1,5 @@
 'use client'
-import { fetchSpaces } from "@/app/actions/fetchSpaces";
-import { Listing } from "@prisma/client";
+import { fetchPhotos } from "@/app/actions/fetchPhotos";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react"
@@ -11,8 +10,8 @@ export default function ShowPhotos({ params }: { params: { id: string } }) {
 
     useEffect(() => {
         async function getPhotos() {
-            const listing = await fetchSpaces(listingId) as Listing;
-            setPhotos(listing?.photos);
+            const photos = await fetchPhotos(listingId);
+            setPhotos(photos);
         }
         getPhotos();
     }, [listingId]);

@@ -1,6 +1,6 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Amenities, Booking, CleaningRate } from "@prisma/client";
+import { Amenities,CleaningRate, InstantBooking } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -28,15 +28,6 @@ export enum AmenitiesEnum {
     OUTDOORAREA = "Outdoor Area",
 };
 
-//export enum CleaningRate {
-//    INCLUDED = "Included",
-//    ADDITIONAL = "Additional",
-//}
-//
-//export enum Booking {
-//    EVERYONE = "Everyone",
-//    NONE = "None",
-//}
 const meetingSchema = z.discriminatedUnion('enabled', [
     z.object({
         enabled: z.literal(false),
@@ -70,7 +61,7 @@ const meetingSchema = z.discriminatedUnion('enabled', [
                 .min(1, "Must be more than 1 Rs."),
             z.nan()
         ]).optional(),
-        instantBooking: z.nativeEnum(Booking).optional(),
+        instantBooking: z.nativeEnum(InstantBooking).optional(),
         amenities: z.array(z.nativeEnum(Amenities)).optional(),
         capacity: z.union([
             z.number()
@@ -113,7 +104,7 @@ const meetingSchema = z.discriminatedUnion('enabled', [
                 .min(1, "Must be more than 1 Rs."),
             z.nan()
         ]).optional(),
-        instantBooking: z.nativeEnum(Booking, {
+        instantBooking: z.nativeEnum(InstantBooking, {
             errorMap: () => ({ message: "Select one option" }),
         }),
         amenities: z.array(z.nativeEnum(Amenities)).refine(
@@ -170,7 +161,7 @@ const mediaSchema = z.discriminatedUnion('enabled', [
                 .min(1, "Must be more than 1 Rs."),
             z.nan()
         ]).optional(),
-        instantBooking: z.nativeEnum(Booking).optional(),
+        instantBooking: z.nativeEnum(InstantBooking).optional(),
         amenities: z.array(z.nativeEnum(Amenities)).optional(),
         capacity: z.union([
             z.number()
@@ -209,7 +200,7 @@ const mediaSchema = z.discriminatedUnion('enabled', [
                 .int()
                 .positive()
                 .min(1, "Must be more than 1 Rs."), z.nan()]),
-        instantBooking: z.nativeEnum(Booking, {
+        instantBooking: z.nativeEnum(InstantBooking, {
             errorMap: () => ({ message: "Select one option" }),
         }),
         amenities: z.array(z.nativeEnum(Amenities)).min(1, "Select atleast one amenity"),
@@ -263,7 +254,7 @@ const eventSchema = z.discriminatedUnion('enabled', [
                 .min(1, "Must be more than 1 Rs."),
             z.nan()
         ]).optional(),
-        instantBooking: z.nativeEnum(Booking).optional(),
+        instantBooking: z.nativeEnum(InstantBooking).optional(),
         amenities: z.array(z.nativeEnum(Amenities)).optional(),
         capacity: z.union([
             z.number()
@@ -302,7 +293,7 @@ const eventSchema = z.discriminatedUnion('enabled', [
                 .int()
                 .positive()
                 .min(1, "Must be more than 1 Rs."), z.nan()]),
-        instantBooking: z.nativeEnum(Booking, {
+        instantBooking: z.nativeEnum(InstantBooking, {
             errorMap: () => ({ message: "Select one option" }),
         }),
         amenities: z.array(z.nativeEnum(Amenities)).min(1, "Select alteast one Amenity"),
