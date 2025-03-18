@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import SharePop from "@/components/spacecomp/Share";
 import { FullListingData } from "@/app/actions/fetchSpacesToShow";
+import Navbar from "@/components/navbar"
 
 export default function ShowListing({
     params,
@@ -18,6 +19,7 @@ export default function ShowListing({
     listing: FullListingData;
 }) {
     const listingId = params.id;
+    const searchData = listing?.space.name ? [{ name: listing.space.name, id: listingId }] : [];
     const router = useRouter();
     const { data: session } = useSession();
     const pathname = usePathname();
@@ -132,14 +134,7 @@ export default function ShowListing({
     }
     return (
         <div>
-            <nav className={"w-full z-50 transition-all duration-300 fixed top-0 bg-black/90"}>
-                <div className="flex items-center justify-between px-6 py-2 mx-auto">
-                    <Link href="/" className="flex items-center space-x-2">
-                        <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
-                    </Link>
-                    <span className="text-white text-lg mr-10  font-medium">My Listings</span>
-                </div>
-            </nav>
+           <Navbar searchData={searchData}/>
             <main>
                 <div className="w-[58%] pt-28 flex-row justify-between flex mx-auto ">
                     <div className="flex flex-row justify-between">
