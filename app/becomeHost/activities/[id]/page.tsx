@@ -37,15 +37,15 @@ export default function Activities({ params }: { params: { id: string } }) {
                 <Link href="/" className="flex items-center space-x-2">
                     <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
                 </Link>
-                <span className="text-white text-lg mr-10 font-medium">Activites</span>
+                <span className="text-white text-lg mr-10 sm:block hidden font-medium">Activites</span>
             </div>
         </nav>
         <main>
-            <div className="w-[58%] pt-32 flex-col flex mx-auto">
+            <div className="lg:w-[58%] w-[85%] md:w-[80%] pt-32 flex-col flex mx-auto">
                 <h1 className="text-3xl font-bold pb-4">Which activities would you like to host?</h1>
-                <span className="text-gray-800 text-sm w-2/3 pb-4">Select the types of activities you would like to host. For each selection, we’ll create a customized space unique to that activity.</span>
+                <span className="text-gray-800 text-sm md:w-2/3 pb-4">Select the types of activities you would like to host. For each selection, we’ll create a customized space unique to that activity.</span>
                 <FormProvider {...formProps}>
-                    <div className="gap-4 flex flex-row w-full">
+                    <div className="gap-4 flex md:flex-row flex-col w-full">
                         <div className="w-full">
                             <Meeting />
                         </div>

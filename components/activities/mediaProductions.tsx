@@ -46,7 +46,7 @@ export default function MediaProductions() {
     }
     return <>
         <div className="border-gray-300 border p-6  flex flex-col space-y-2 ">
-            <h2 className="font-bold text-2xl ">Media Productions</h2>
+            <h2 className="font-bold text-2xl ">Media</h2>
             <ul className="list-disc list-inside flex flex-col gap-1 text-gray-800 text-sm pb-2">
                 <li>Film Shoots</li>
                 <li>Photo Shoots</li>

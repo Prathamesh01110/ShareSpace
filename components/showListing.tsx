@@ -136,40 +136,40 @@ export default function ShowListing({
         <div>
            <Navbar searchData={searchData}/>
             <main>
-                <div className="w-[58%] pt-28 flex-row justify-between flex mx-auto ">
+                <div className="xl:w-[58%] w-[85%] md:w-[95%] pt-32 flex-col flex mx-auto">
                     <div className="flex flex-row justify-between">
                         <div className=" flex-col flex mx-auto">
 
-                            <div className="flex-row flex justify-between">
+                            <div className="sm:flex-row flex-col flex justify-between">
                                 <div className="flex-col flex ">
                                     <div className="font-semibold text-2xl pb-2">{listing?.space.name}</div>
                                     <div className="text-gray-600  text-sm pb-6">{listing?.space.address}, {listing?.space.city}, {listing?.space.state}</div>
                                 </div>
-                                <div className="flex-row flex gap-4  my-auto">
+                                <div className="flex-row flex sm:gap-4  my-auto">
                                     <div
-                                        className="flex items-center gap-2 px-4 py-2 text-gray-800 font-semibold rounded-md cursor-pointer transition-all duration-200"
+                                        className="flex items-center gap-2 sm:px-4 py-2 text-gray-800 font-semibold rounded-md cursor-pointer transition-all duration-200"
                                         onClick={renderPopup}
                                     >
-                                        <Share />
-                                        <span className="text-lg">Share</span>
+                                        <Share className="w-5 h-5"/>
+                                        <span className="text-sm">Share</span>
                                     </div>
 
                                     <div
                                         className="flex items-center gap-2 px-4 py-2 text-gray-800 font-semibold rounded-md cursor-pointer transition-all duration-200"
                                         onClick={saveClicked}
                                     >
-                                        <Heart className={`w-6 h-6 transition-colors duration-300 ${saved ? "text-purple-600 fill-purple-600" : "text-gray-500"}`} />
-                                        <span className="text-lg">{saved ? "Saved" : "Save"}</span>
+                                        <Heart className={`w-5 h-5 transition-colors duration-300 ${saved ? "text-purple-600 fill-purple-600" : "text-gray-500"}`} />
+                                        <span className="text-sm">{saved ? "Saved" : "Save"}</span>
                                     </div>
 
                                 </div>
                             </div>
-                            <div className="flex flex-row gap-2 pb-8">
-                                <img src={listing?.space.photos[0]} alt={"image"} className="w-1/2 h-[550px] rounded-sm object-cover" />
-                                <div className="grid grid-cols-2 gap-2 w-1/2 h-[550px]  ">
-                                    <img src={listing?.space.photos[1]} alt={"image"} className="h-full w-full  rounded-sm object-cover" />
-                                    <img src={listing?.space.photos[2]} alt={"image"} className="h-full w-full  rounded-sm object-cover" />
-                                    <img src={listing?.space.photos[3]} alt={"image"} className="h-full w-full  rounded-sm object-cover" />
+                            <div className="flex flex-row gap-2 pb-8 pt-6">
+                                <img src={listing?.space.photos[0]} alt={"image"} className="md:w-1/2 h-[550px] rounded-sm object-cover" onClick={() => router.push(`/spaces/showPhotos/${listingId}`)}/>
+                                <div className="md:grid grid-cols-2 gap-2 hidden w-1/2 h-[550px]  ">
+                                    <img src={listing?.space.photos[1]} alt={"image"} className="h-full w-full  rounded-sm object-cover" onClick={() => router.push(`/spaces/showPhotos/${listingId}`)}/>
+                                    <img src={listing?.space.photos[2]} alt={"image"} className="h-full w-full  rounded-sm object-cover" onClick={() => router.push(`/spaces/showPhotos/${listingId}`)}/>
+                                    <img src={listing?.space.photos[3]} alt={"image"} className="h-full w-full  rounded-sm object-cover" onClick={() => router.push(`/spaces/showPhotos/${listingId}`)}/>
                                     <div className="relative h-full w-full flex items-center justify-center ">
                                         <img src={listing?.space.photos[1]} alt={"image"} className="absolute h-full w-full  rounded-sm object-cover bg-black " />
                                         <div className="absolute inset-0 bg-black opacity-50 rounded-sm"></div>
@@ -177,8 +177,11 @@ export default function ShowListing({
                                     </div>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-3 gap-8">
-                                <div className="flex flex-col w-full col-span-2">
+                            <div className="grid md:grid-cols-3 gap-8">
+                                <div className="md:hidden block">
+                                    <BookingSummary spaceData={listing} />
+                                </div>
+                                <div className="flex flex-col w-full md:col-span-2">
                                     <div className="flex flex-row gap-2">
                                         <LandPlot size={20} />
                                         <span className="text-sm">{listing?.space.size} sqft</span>
@@ -290,7 +293,7 @@ export default function ShowListing({
                                     <span onClick={() => setReadMorePolicy(!readMorePolicy)} className="text-gray-500 text-sm underline  cursor-pointer">Read {readMorePolicy ? "less" : "more"}</span>
                                     <hr className="border-t border-gray-200 mt-6 mb-6 " />
                                 </div>
-                                <div>
+                                <div className="md:block hidden">
                                     <BookingSummary spaceData={listing} />
                                 </div>
                             </div>

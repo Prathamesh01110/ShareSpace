@@ -91,13 +91,13 @@ export default function ShareSpaceSpace({ params }: {
         <nav className={"w-full z-50 transition-all duration-300 fixed top-0 bg-black/90"}>
             <div className="flex items-center justify-between px-6 py-2 mx-auto">
                 <Link href="/" className="flex items-center space-x-2">
-                    <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
+                        <span className="text-2xl sm:text-4xl font-bold text-white py-4 sm:p-3">SpaceShare</span>
                 </Link>
-                <span className="text-white text-lg mr-10  font-medium">Type of Space</span>
+                <span className="text-white text-lg mr-10 md:block hidden  font-medium">Type of Space</span>
             </div>
         </nav>
         <main>
-            <div className="w-[58%] pt-32 flex-col flex mx-auto ">
+            <div className="lg:w-[58%] w-[98%] md:w-[80%] pt-32 flex-col flex mx-auto">
                 <form className="max-w-2xl mx-auto p-8">
                     <div className="space-y-8">
                         <div>

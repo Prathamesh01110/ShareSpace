@@ -67,22 +67,22 @@ export default function BecomeHostPage() {
             <nav className={"w-full z-50 transition-all duration-300 fixed top-0 bg-black/90"}>
                 <div className="flex items-center justify-between px-6 py-2 mx-auto">
                     <Link href="/" className="flex items-center space-x-2">
-                        <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
+                        <span className="text-2xl sm:text-4xl font-bold text-white py-4 sm:p-3">SpaceShare</span>
                     </Link>
-                    <span className="text-white text-lg mr-10  font-medium">My Spaces</span>
+                    <span className="text-white text-lg mr-10 sm:block hidden font-medium">My Spaces</span>
                 </div>
             </nav>
             <main>
-                <div className="w-[58%] pt-32 flex-col flex mx-auto ">
+                <div className="lg:w-[58%] w-[85%] md:w-[80%] pt-32 flex-col flex mx-auto">
                     <div className="flex flex-row items-center justify-between pb-10">
                         <h1 className="font-bold text-3xl ">Spaces</h1>
                         <Button className="rounded-none  font-semibold p-6" variant={"outline"} onClick={handleSubmit}>Add a Space</Button>
                     </div>
                     {space?.length > 0 ? (space?.map((space,index) => (
-                        <div className="border w-full h-24 flex flex-row items-center p-8 justify-between mb-10" key={index}>
-                            <span className="font-bold text-2xl">{space.name}</span>
-                            <div className="flex flex-row items-center gap-6">
-                                <Button className="w-24 h-12 rounded-none bg-[#8559EC] font-bold " onClick={() => handleResume(space.id)} >Resume</Button>
+                        <div className="border w-full sm:h-24 h-30 flex flex-col sm:flex-row sm:items-center sm:p-8 p-4 sm:justify-between mb-10" key={index}>
+                            <span className="font-bold sm:text-2xl text-xl">{space.name}</span>
+                            <div className="flex flex-row items-center sm:gap-6 pt-4 gap-4 justify-between">
+                                <Button className="sm:w-24 w-full sm:h-12 h-10 rounded-none bg-[#8559EC] font-bold " onClick={() => handleResume(space.id)} >Resume</Button>
                                 <Trash2 onClick={() => handleDeleteSpace(space.id)} />
                             </div>
                         </div>))) : (

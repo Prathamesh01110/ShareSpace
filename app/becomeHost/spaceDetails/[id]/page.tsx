@@ -26,12 +26,12 @@ const spaceFormSchema = z.object({
 export type SpaceFormValues = z.infer<typeof spaceFormSchema>
 
 const PARKING_OPTIONS = [
-    {name: "Free onsite parking", value: "ONSITE"},
-    {name: "Free street parking", value: "STREET"},
-    {name: "Valet", value: "VALET"},
-    {name: "Paid onsite parking", value: "METERED_STREET"},
-    {name: "Metered street parking", value: "LOT"},
-    {name: "Nearby parking lot", value: "PAID_ONSITE"},
+    { name: "Free onsite parking", value: "ONSITE" },
+    { name: "Free street parking", value: "STREET" },
+    { name: "Valet", value: "VALET" },
+    { name: "Paid onsite parking", value: "METERED_STREET" },
+    { name: "Metered street parking", value: "LOT" },
+    { name: "Nearby parking lot", value: "PAID_ONSITE" },
 ]
 
 export default function Space({ params }: {
@@ -100,13 +100,13 @@ export default function Space({ params }: {
         <nav className={"w-full z-50 transition-all duration-300 fixed top-0 bg-black/90"}>
             <div className="flex items-center justify-between px-6 py-2 mx-auto">
                 <Link href="/" className="flex items-center space-x-2">
-                    <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
+                        <span className="text-2xl sm:text-4xl font-bold text-white py-4 sm:p-3">SpaceShare</span>
                 </Link>
-                <span className="text-white text-lg mr-10  font-medium">Space Details</span>
+                <span className="text-white text-lg mr-10 md:block hidden font-medium">Space Details</span>
             </div>
         </nav>
         <main>
-            <div className="w-[58%] pt-32 flex-col flex mx-auto ">
+            <div className="lg:w-[58%] w-[85%] md:w-[80%] pt-32 flex-col flex mx-auto">
                 <form className="space-y-8">
                     <div className="flex flex-col space-y-4 w-full">
                         <span className="text-3xl font-bold">What type of space are you space?</span>
@@ -115,7 +115,7 @@ export default function Space({ params }: {
                         <Input
                             id="spaceType"
                             placeholder="Apartment"
-                            className="w-1/2 mt-10"
+                            className="md:w-1/2 mt-10"
                             {...register("spaceType")}
                         />
                         {errors.spaceType && (
@@ -127,8 +127,8 @@ export default function Space({ params }: {
 
                     <div className="flex flex-col space-y-4 w-full">
                         <span className="text-3xl font-bold">Do you offer overnight stays at this space?</span>
-                        <div className="flex flex-row items-center justify-between">
-                            <span>
+                        <div className="flex sm:flex-row flex-col md:items-center space-y-4 md:space-y-0 justify-between">
+                            <span className="sm:w-2/3">
                                 Select 'Yes' if your space is listed on sites like Airbnb or VRBO, or if it's a hotel or similar establishment that's <br />
                                 subject to lodging taxes.
                             </span>
@@ -163,8 +163,10 @@ export default function Space({ params }: {
 
                     <div className="flex flex-col space-y-4 w-full">
                         <span className="text-3xl font-bold">Describe the parking options</span>
-                        <div className="flex flex-row items-center justify-between">
-                            <span className="font-normal">Are there parking options at or near your space?</span>
+                        <div className="flex sm:flex-row flex-col md:items-center space-y-4 md:space-y-0 justify-between">
+                            <span className="sm:w-2/3">
+                                Are there parking options at or near your space?
+                            </span>
                             <Controller
                                 control={control}
                                 name="hasParking"
@@ -247,8 +249,10 @@ export default function Space({ params }: {
 
                     <div className="flex flex-col space-y-4 w-full">
                         <span className="text-3xl font-bold">Security cameras and recording devices</span>
-                        <div className="flex flex-row items-center justify-between">
-                            <span>Does the space have security cameras or recording devices?</span>
+                        <div className="flex sm:flex-row flex-col md:items-center space-y-4 md:space-y-0 justify-between">
+                            <span className="sm:w-2/3">
+                                Does the space have security cameras or recording devices?
+                            </span>
                             <Controller
                                 control={control}
                                 name="hasSecurityCameras"

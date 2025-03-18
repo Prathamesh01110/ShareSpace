@@ -86,16 +86,16 @@ const CreateAddress = ({ params }: {
 
     return (
         <>
-            <nav className="w-full z-50 transition-all duration-300 fixed top-0 bg-black/90">
+   340         <nav className="w-full z-50 transition-all duration-300 fixed top-0 bg-black/90">
                 <div className="flex items-center justify-between px-6 py-2 mx-auto">
                     <Link href="/" className="flex items-center space-x-2">
-                        <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
+                        <span className="text-2xl sm:text-4xl font-bold text-white py-4 sm:p-3">SpaceShare</span>
                     </Link>
-                    <span className="text-white text-lg mr-10 font-medium">Address</span>
+                    <span className="text-white text-lg hidden sm:block mr-10 font-medium">Address</span>
                 </div>
             </nav>
             <main>
-                <div className="w-[58%] pt-32 flex-col flex mx-auto">
+                <div className="lg:w-[58%] w-[85%] md:w-[80%] pt-32 flex-col flex mx-auto">
                     <div className="flex flex-col space-y-4 w-full">
                         <span className="font-extrabold text-3xl">Space Address</span>
                         <span className="font-light text-md">
@@ -106,8 +106,8 @@ const CreateAddress = ({ params }: {
                     </div>
 
                     <form className="mt-16 space-y-8">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="flex flex-col w-2/3 space-y-1.5">
+                        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+                            <div className="flex flex-col md:w-2/3  space-y-1.5">
                                 <Label htmlFor="country" className="font-bold text-sm text-gray-700">
                                     Country
                                 </Label>
@@ -120,10 +120,10 @@ const CreateAddress = ({ params }: {
                                 />
                             </div>
 
-                            <div className="flex flex-col w-2/3 space-y-1.5"></div>
+                            <div className="flex flex-col md:w-2/3 space-y-1.5"></div>
 
-                            <div className="flex flex-col w-2/3 space-y-1.5">
-                                <Label htmlFor="address" className="font-bold text-sm text-gray-700">
+                            <div className="flex flex-col md:w-2/3 space-y-1.5">
+                                <Label htmlFor="address" className="font-bold text-sm text-gray-700 ">
                                     Address *
                                 </Label>
                                 <Input
@@ -137,7 +137,7 @@ const CreateAddress = ({ params }: {
                                 )}
                             </div>
 
-                            <div className="flex flex-col w-2/3 space-y-1.5">
+                            <div className="flex flex-col md:w-2/3 space-y-1.5">
                                 <Label htmlFor="landmark" className="font-bold text-sm text-gray-700">
                                     Landmark *
                                 </Label>
@@ -152,7 +152,7 @@ const CreateAddress = ({ params }: {
                                 )}
                             </div>
 
-                            <div className="flex flex-col w-2/3 space-y-1.5">
+                            <div className="flex flex-col md:w-2/3 space-y-1.5">
                                 <Label htmlFor="city" className="font-bold text-sm text-gray-700">
                                     City *
                                 </Label>
@@ -167,7 +167,7 @@ const CreateAddress = ({ params }: {
                                 )}
                             </div>
 
-                            <div className="flex flex-col w-2/3 space-y-1.5">
+                            <div className="flex flex-col md:w-2/3 space-y-1.5">
                                 <Label htmlFor="state" className="font-bold text-sm text-gray-700">
                                     State *
                                 </Label>
@@ -183,7 +183,7 @@ const CreateAddress = ({ params }: {
                             </div>
                         </div>
 
-                        <div className="flex flex-col w-1/3 space-y-1.5">
+                        <div className="flex flex-col md:w-1/3 space-y-1.5">
                             <Label htmlFor="pincode" className="font-bold text-sm text-gray-700">
                                 Pincode *
                             </Label>
@@ -200,7 +200,7 @@ const CreateAddress = ({ params }: {
                         </div>
 
                         <hr className="border-t border-gray-200 mt-16 mb-10" />
-                        <div className="w-full flex justify-between mb-16">
+                        <div className="w-full flex justify-between mb-16 pb-10">
                             <Link href={`/becomeHost/createSpace/${spaceId}`}>
                                 <Button variant="outline" className="text-md font-semibold">Back</Button>
                             </Link>

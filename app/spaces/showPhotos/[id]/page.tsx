@@ -17,19 +17,19 @@ export default function ShowPhotos({ params }: { params: { id: string } }) {
     }, [listingId]);
 
     return <>
-        <div className="p-10 pt-12">
+        <div className="md:p-10 p-6 pt-12">
             <Link href={`/spaces/showListing/${listingId}`} className="flex flex-row gap-2 items-center pb-8">
                 <ChevronLeft />
                 <span className="text-lg">Back</span>
             </Link>
-            <div className=" grid grid-cols-3 gap-8 ">
+            <div className="grid md:grid-cols-3 grid-cols-1 sm:grid-cols-2 gap-8 ">
                 {photos && photos.length > 0 ? (
                     photos.map((photo, index) => (
                         <img
                             key={index}
                             src={photo}
                             alt={`listing image ${index + 1}`}
-                            className="w-full h-[450px] rounded-md"
+                            className="w-full md:h-[450px] h-[300px] rounded-md"
                         />
                     ))
                 ) : (

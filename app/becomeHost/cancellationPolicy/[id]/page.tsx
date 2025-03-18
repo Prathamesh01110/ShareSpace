@@ -113,13 +113,13 @@ export default function CancellationPolicy({params}:{params:{id:string}}) {
         <nav className={"w-full z-50 transition-all duration-300 fixed top-0 bg-black/90"}>
             <div className="flex items-center justify-between px-6 py-2 mx-auto">
                 <Link href="/" className="flex items-center space-x-2">
-                    <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
+                        <span className="text-2xl sm:text-4xl font-bold text-white py-4 sm:p-3">SpaceShare</span>
                 </Link>
-                <span className="text-white text-lg mr-10  font-medium">Cancellation Policy</span>
+                <span className="text-white text-lg mr-10 md:block hidden font-medium">Cancellation Policy</span>
             </div>
         </nav>
         <main>
-            <div className="w-[58%] pt-32 flex-col flex mx-auto ">
+            <div className="lg:w-[58%] w-[85%] md:w-[80%] pt-32 flex-col flex mx-auto">
                 <div className="space-y-6">
                     <div className="space-y-4">
                         <h1 className="text-3xl font-bold">Choose your Cancellation Policy</h1>
@@ -129,12 +129,6 @@ export default function CancellationPolicy({params}:{params:{id:string}}) {
                     </div>
 
                     <hr className="border-t border-gray-200" />
-
-                    <p className="text-gray-800 text-sm">
-                        <strong>Cancellation grace period:</strong> All Bookings are subject to ShareSpace's Grace Period
-                        policy which provides a full refund for Bookings cancelled within 24 hours from receipt
-                        of a Booking Confirmation but no later than 48 hours prior to the Event start time.
-                    </p>
 
                     <form >
                         <Controller

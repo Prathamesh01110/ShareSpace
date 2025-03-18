@@ -139,13 +139,13 @@ export default function UploadPhotos({ params }: { params: { id: string } }) {
         <nav className={"w-full z-50 transition-all duration-300 fixed top-0 bg-black/90"}>
             <div className="flex items-center justify-between px-6 py-2 mx-auto">
                 <Link href="/" className="flex items-center space-x-2">
-                    <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
+                        <span className="text-2xl sm:text-4xl font-bold text-white py-4 sm:p-3">SpaceShare</span>
                 </Link>
                 <span className="text-white text-lg mr-10  font-medium">Space Details</span>
             </div>
         </nav>
         <main>
-        <div className="w-[58%] pt-32 flex-col flex mx-auto">
+            <div className="lg:w-[58%] w-[85%] md:w-[80%] pt-32 flex-col flex mx-auto">
             <form className="flex flex-col space-y-4 w-full">
                 <h1 className="text-3xl font-extrabold pb-2">Upload photos of your space</h1>
                 <span className="text-sm text-gray-800 pb-2">
@@ -160,7 +160,7 @@ export default function UploadPhotos({ params }: { params: { id: string } }) {
                 </ul>
 
                 {photosList.length === 0 ? (
-                    <div className="flex flex-col w-2/3 items-center border py-20 gap-8">
+                    <div className="flex flex-col md:w-2/3 items-center border py-20 gap-8">
                         <span className="text-sm text-gray-800">Please add at least 4 space photos</span>
                         <Button
                             type="button"
@@ -179,8 +179,8 @@ export default function UploadPhotos({ params }: { params: { id: string } }) {
                         />
                     </div>
                 ) : (
-                    <div className="w-2/3">
-                        <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div className="md:w-2/3">
+                        <div className="grid sm:grid-cols-3 gap-4 mb-4">
                             {photosList.map((photo, index) => (
                                 <div
                                     key={photo.id}
@@ -233,7 +233,7 @@ export default function UploadPhotos({ params }: { params: { id: string } }) {
                     </div>
                 )}
 
-                <span className="flex flex-wrap w-2/3 text-gray-600 text-md pt-4">
+                <span className="flex flex-wrap md:w-2/3 text-gray-600 text-md pt-4">
                     Drag and drop your photos to change the order. Your first photo is what your guests will see when browsing, so make sure it represents your space.
                 </span>
                 <hr className="border-t border-gray-200 mt-16 mb-10" />
