@@ -31,6 +31,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
     const [submitError, setSubmitError] = useState("");
     const calendarRef = useRef(null);
     const minimumHours = spaceData?.minimumHours || 1;
+    console.log(spaceData?.instantBooking);
 
     useEffect(() => {
         setPrice(spaceData?.hourlyRate || 1);
@@ -217,7 +218,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
             const startHour = allTimes.find(t => t.time === startTime)?.hour || 0;
             const endHour = allTimes.find(t => t.time === endTime)?.hour || 0;
 
-            const bookingData:BookingType = {
+            const bookingData: BookingType = {
                 listingId: spaceData?.id || "",
                 date: selectedDate,
                 startTime: startHour,
@@ -259,13 +260,13 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
                     ) : (
                         <div className="flex flex-col gap-1 items-center">
                             <span className="text-sm text-[#9068ED]">Add details to view total price</span>
-                            <div className="flex justify-between items-center w-36">
-                                <div className="w-6 h-6">⚡</div>
-                                <span className="flex items-center text-3xl font-bold">
-                                    ₹{spaceData?.hourlyRate}
-                                </span>
-                                <span className="pt-2 font-bold">/hr</span>
-                            </div>
+                                <div className="flex flex-row w-full items-center justify-center gap-1">
+                                    <div className="w-6 h-6">⚡</div>
+                                    <span className="flex items-center text-3xl font-bold">
+                                        ₹{spaceData?.hourlyRate}
+                                    </span>
+                                    <span className="pt-2 font-bold">/hr</span>
+                                </div>
                             <span className="text-sm text-gray-500 text-center">{minimumHours} hr minimum</span>
                         </div>
                     )}
@@ -305,7 +306,6 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
                                     className="absolute top-15 left-0 z-50 bg-white w-full shadow-lg border"
                                 >
                                     <Bookingcal
-                                        schedules={spaceData?.space?.operatingHours || {}}
                                         onDateChange={handleDateSelect}
                                         unavailableDays={getUnavailableDays()}
                                     />
@@ -454,16 +454,13 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
                 <p className="text-xs text-muted-foreground">
                     You won't be charged yet
                 </p>
-                {spaceData?.instantBooking === 'EVERYONE' ? (
+                {spaceData?.instantBooking === 'EVERYONE' && (
                     <div>
                         <p className="text-lg font-semibold pb-2">⚡ Instant Book </p>
                         <p className="text-xs text-muted-foreground leading-5 pl-6">After payment, your booking will be instantly confirmed. Enjoy a seamless and hassle-free booking experience.</p>
                     </div>
-                ) : (
-                    <div>
-                        <p className="text-sm text-muted-foreground">You won't be charged yet</p>
-                    </div>
-                )}
+                )
+                }
             </div>
         </div>
     );

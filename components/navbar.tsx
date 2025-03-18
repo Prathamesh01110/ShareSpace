@@ -92,6 +92,9 @@ export default function Navbar() {
                     <Link href="/spaces" className="text-sm text-white font-medium">
                         Find Spaces
                     </Link>
+                    <Link href="/bookings" className="text-sm text-white font-medium">
+                      Bookings
+                    </Link>
                     <div className="text-sm text-white font-medium cursor-pointer" onClick={handleBecomeHost}>
                         Become a Host
                     </div>
@@ -134,7 +137,7 @@ export default function Navbar() {
                                     />
                                 </div>
                             )}
-                            
+
                             <Link href="/spaces" className="text-xl text-white font-medium py-2">
                                 Find Spaces
                             </Link>
