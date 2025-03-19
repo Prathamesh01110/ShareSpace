@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, use } from 'react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useForm, Controller } from "react-hook-form";
@@ -64,7 +64,8 @@ const formSchema = z.object({
 
 export type FormValues = z.infer<typeof formSchema>;
 
-export default function CancellationPolicy({params}:{params:{id:string}}) {
+export default function CancellationPolicy(props:{params: Promise<{id:string}>}) {
+    const params = use(props.params);
     const listingId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
@@ -90,7 +91,7 @@ export default function CancellationPolicy({params}:{params:{id:string}}) {
         }finally{
             setIsSubmitting(false);
         }
-    };
+    }
     useEffect(() => {
         async function getSpacesToEdit() {
             try {

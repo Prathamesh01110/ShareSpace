@@ -40,7 +40,8 @@ function SkeletonLoader() {
     );
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const params = await props.params;
     const listing = await fetchFullListing(params.id);
     return {
         title: listing ? `${listing.space.name} | SpaceShare` : 'Space Details | SpaceShare',
@@ -55,7 +56,8 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     };
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     return (
         <Suspense fallback={<SkeletonLoader />}>
             <ListingDetails id={params.id} />

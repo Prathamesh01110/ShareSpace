@@ -9,10 +9,11 @@ import { ActivitiesSchema, useActivitiesForm, } from "@/app/hooks/useActivitiesF
 import createActivity from "@/app/actions/createActivity";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, use } from "react";
 
 
-export default function Activities({ params }: { params: { id: string } }) {
+export default function Activities(props: { params: Promise<{ id: string }> }) {
+    const params = use(props.params);
     const spaceId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();

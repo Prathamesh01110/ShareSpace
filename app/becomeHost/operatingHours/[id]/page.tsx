@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createOperatingHours } from "@/app/actions/operatingHours"
-import { useState } from "react"
+import { useState, use } from "react";
 import { Loader2 } from "lucide-react"
 
 const HOURS = Array.from({ length: 25 }, (_, i) => {
@@ -35,9 +35,12 @@ const operatingHoursSchema = z.object({
 
 export type OperatingHoursValues = z.infer<typeof operatingHoursSchema>
 
-export default function OperatingHours({ params }: {
-    params: { id: string }
-}) {
+export default function OperatingHours(
+    props: {
+        params: Promise<{ id: string }>
+    }
+) {
+    const params = use(props.params);
     const spaceId = params.id;
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);

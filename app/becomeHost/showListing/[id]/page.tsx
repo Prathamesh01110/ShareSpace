@@ -5,12 +5,13 @@ import { ChevronDown, ChevronUp, LandPlot, LayoutGrid, NotepadText, ShieldCheck,
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 
-export default function ShowListing({ params }: { params: { id: string } }) {
+export default function ShowListing(props: { params: Promise<{ id: string }> }) {
+    const params = use(props.params);
     const listingId = params.id;
     const router = useRouter();
-    const { data: session } = useSession(); const [listing, setListing] = useState<Listing | null>(null); const [operatingHours, setOperatingHours] = useState<OperatingHours[]>([]);
+    const { data: session } = useSession();const [listing, setListing] = useState<Listing | null>(null);const [operatingHours, setOperatingHours] = useState<OperatingHours[]>([]);
     const [readMore, setReadMore] = useState(false);
     const [showMore, setShowMore] = useState(false);
     const [showCleaningProtocol, setShowCleaningProtocol] = useState(false);

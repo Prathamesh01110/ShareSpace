@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, use } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -25,9 +25,12 @@ const spaceSchema = z.object({
 
 export type SpaceFormData = z.infer<typeof spaceSchema>;
 
-export default function ShareSpaceSpace({ params }: {
-    params: { id: string }
-}) {
+export default function ShareSpaceSpace(
+    props: {
+        params: Promise<{ id: string }>
+    }
+) {
+    const params = use(props.params);
     const spaceId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
@@ -85,7 +88,7 @@ export default function ShareSpaceSpace({ params }: {
         } finally {
             setIsSubmitting(false);
         }
-    };
+    }
 
     return <>
         <nav className={"w-full z-50 transition-all duration-300 fixed top-0 bg-black/90"}>

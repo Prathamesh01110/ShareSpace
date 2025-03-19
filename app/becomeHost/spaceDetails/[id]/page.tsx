@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createSpaceDetails } from "@/app/actions/spaceDetails"
-import { useEffect, useState } from "react"
+import { useEffect, useState, use } from "react";
 import { fetchSpacesToEdit } from "@/app/actions/fetchSpacesToEdit"
 import { Space as SpaceValues } from "@prisma/client"
 import { Loader2 } from "lucide-react"
@@ -34,9 +34,12 @@ const PARKING_OPTIONS = [
     { name: "Nearby parking lot", value: "PAID_ONSITE" },
 ]
 
-export default function Space({ params }: {
-    params: { id: string }
-}) {
+export default function Space(
+    props: {
+        params: Promise<{ id: string }>
+    }
+) {
+    const params = use(props.params);
     const spaceId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
@@ -129,7 +132,7 @@ export default function Space({ params }: {
                         <span className="text-3xl font-bold">Do you offer overnight stays at this space?</span>
                         <div className="flex sm:flex-row flex-col md:items-center space-y-4 md:space-y-0 justify-between">
                             <span className="sm:w-2/3">
-                                Select 'Yes' if your space is listed on sites like Airbnb or VRBO, or if it's a hotel or similar establishment that's <br />
+                                Select 'Yes' if your space is listed on sites like Airbnb or VRBO, or if it's a hotel or similar establishment that's
                                 subject to lodging taxes.
                             </span>
                             <Controller
@@ -225,7 +228,7 @@ export default function Space({ params }: {
                                 </div>
 
                                 <div className="flex flex-col space-y-4 w-full pt-10">
-                                    <span className="text-md font-semibold">Write a description of the parking options</span>
+                                    <span className="text-md font-semibold">Write a description of the parking options ( Optional )</span>
                                     <span className="font-normal text-gray-600 text-sm">
                                         Don't include private information. This will be shown publicly.
                                     </span>

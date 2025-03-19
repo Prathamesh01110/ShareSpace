@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -34,7 +34,8 @@ const policyFormSchema = z.object({
 
 export type PolicyFormValues = z.infer<typeof policyFormSchema>;
 
-export default function Policy({ params }: { params: { id: string } }) {
+export default function Policy(props: { params: Promise<{ id: string }> }) {
+    const params = use(props.params);
     const listingId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
@@ -62,22 +63,22 @@ export default function Policy({ params }: { params: { id: string } }) {
         defaultValues: {
             policiesAccepted: false,
         },
-    }); useEffect(() => {
-        async function getSpacesToEdit() {
-            try {
-                if (listingId !== 'new') {
-                    const listingData = await fetchSpacesToEdit(listingId) as Space;
-                    console.log("Space Data", listingData);
-                    form.reset({
-                        policiesAccepted: listingData?.agreesToPolicies || false,
-                    })
+    });useEffect(() => {
+            async function getSpacesToEdit() {
+                try {
+                    if (listingId !== 'new') {
+                        const listingData = await fetchSpacesToEdit(listingId) as Space;
+                        console.log("Space Data", listingData);
+                        form.reset({
+                            policiesAccepted: listingData?.agreesToPolicies || false,
+                        })
+                    }
+                } catch (error) {
+                    console.error('Error fetching listing:', error);
                 }
-            } catch (error) {
-                console.error('Error fetching listing:', error);
             }
-        }
-        getSpacesToEdit();
-    }, [listingId, form.reset])
+            getSpacesToEdit();
+        }, [listingId, form.reset])
     async function onSubmit(data: PolicyFormValues) {
         setIsSubmitting(true);
         try {

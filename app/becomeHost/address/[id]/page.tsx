@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, use } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -28,9 +28,12 @@ const addressSchema = z.object({
 
 export type FormAddress = z.infer<typeof addressSchema>;
 
-const CreateAddress = ({ params }: {
-    params: { id: string }
-}) => {
+const CreateAddress = (
+    props: {
+        params: Promise<{ id: string }>
+    }
+) => {
+    const params = use(props.params);
     const spaceId = params.id;
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
@@ -86,10 +89,10 @@ const CreateAddress = ({ params }: {
 
     return (
         <>
-   340         <nav className="w-full z-50 transition-all duration-300 fixed top-0 bg-black/90">
+            <nav className="w-full z-50 transition-all duration-300 fixed top-0 bg-black/90">
                 <div className="flex items-center justify-between px-6 py-2 mx-auto">
                     <Link href="/" className="flex items-center space-x-2">
-                        <span className="text-2xl sm:text-4xl font-bold text-white py-4 sm:p-3">SpaceShare</span>
+                        <span className="text-4xl font-bold text-white p-3">SpaceShare</span>
                     </Link>
                     <span className="text-white text-lg hidden sm:block mr-10 font-medium">Address</span>
                 </div>

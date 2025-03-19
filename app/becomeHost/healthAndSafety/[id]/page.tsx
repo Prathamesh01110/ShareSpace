@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { use } from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
@@ -260,7 +260,8 @@ const CheckboxQuestionGroup: React.FC<CheckboxQuestionGroupProps> = ({
     );
 };
 
-export default function Cleaning({ params }: { params: { id: string } }) {
+export default function Cleaning(props: { params: Promise<{ id: string }> }) {
+    const params = use(props.params);
     const listingId = params.id;
     const router = useRouter();
     const {
@@ -291,7 +292,7 @@ export default function Cleaning({ params }: { params: { id: string } }) {
         } catch (error) {
             console.error("Error submitting form:", error);
         }
-    };
+    }
 
     return <>
         <nav className={"w-full z-50 transition-all duration-300 fixed top-0 bg-black/90"}>
@@ -319,10 +320,13 @@ export default function Cleaning({ params }: { params: { id: string } }) {
                     <hr className="border-t border-gray-200 my-12" />
 
                     <div className="space-y-12">
-                        {CLEANING_QUESTIONS.map((questionData, index) => (
+                        {CLEANING_QUESTIONS.map((questionData, index) => {
+                            const {key , ...otherprops} = questionData;
+                            return(
                             <div key={`question-${index}`}>
                                 <CheckboxQuestionGroup
-                                    {...questionData}
+                                    key={key}
+                                    {...otherprops}
                                     control={control}
                                     name={questionData.key}
                                 />
@@ -330,7 +334,8 @@ export default function Cleaning({ params }: { params: { id: string } }) {
                                     <hr className="border-t border-gray-200 my-12" />
                                 )}
                             </div>
-                        ))}
+                            )
+                        })}
                     </div>
 
                     <hr className="border-t border-gray-200 mt-16 mb-10" />

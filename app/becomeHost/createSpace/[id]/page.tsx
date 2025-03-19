@@ -7,10 +7,12 @@ import { Check } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
+import React from "react";
 
 type ButtonState = "edit" | "start" | "none";
 
-export default async function CreateSpace({ params }: { params: { id: string } }) {
+export default async function CreateSpace(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     const spaceId = params.id;
     const progress = await fetchProgress(spaceId) as SpaceProgress;
     const session = await getServerSession(NEXT_AUTH) as UserSession;
@@ -47,7 +49,7 @@ export default async function CreateSpace({ params }: { params: { id: string } }
         "cancellationPolicy",
         "activities",
         "policies",
-   ]
+    ]
 
     const completedSections = sections.filter(section => progress?.[section]).length;
     const progressPercentage = Math.ceil((completedSections / sections.length) * 100);
@@ -132,15 +134,19 @@ export default async function CreateSpace({ params }: { params: { id: string } }
                     </span>
                     <hr className="border-t border-gray-200 mt-6 mb-6" />
 
-                    {sections.map((section, index) =>
-                        renderSection(
-                            index + 1,
-                            title[index],
-                            "Fill out this section",
-                            section,
-                            path[index],
-                        )
-                    )}
+                    {sections.map((section, index) => (
+                        <React.Fragment key={index}>{
+                            renderSection(
+                                index + 1,
+                                title[index],
+                                "Fill out this section",
+                                section,
+                                path[index],
+                            )
+
+                        }
+                        </React.Fragment>
+                    ))}
                 </div>
             </main>
         </>

@@ -5,9 +5,10 @@ import { Listing } from "@prisma/client";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react"
+import { useEffect, useState, use } from "react";
 
-export default function ShowPhotos({ params }: { params: { id: string } }) {
+export default function ShowPhotos(props: { params: Promise<{ id: string }> }) {
+    const params = use(props.params);
     const listingId = params.id;
     const [photos, setPhotos] = useState<string[]>([]);
 

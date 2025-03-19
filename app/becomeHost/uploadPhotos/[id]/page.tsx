@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState, useRef } from "react";
+import { useState, useRef, use } from "react";
 import { X, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,7 +30,8 @@ interface PhotoItem {
     id: string;
 }
 
-export default function UploadPhotos({ params }: { params: { id: string } }) {
+export default function UploadPhotos(props: { params: Promise<{ id: string }> }) {
+    const params = use(props.params);
     const spaceId = params.id;
     const router = useRouter();
     const [photosList, setPhotosList] = useState<PhotoItem[]>([]);
