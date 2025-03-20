@@ -34,7 +34,7 @@ function Main({ setSearchData }: { setSearchData: (data: SearchItem[]) => void }
     useEffect(() => {
         async function loadListings() {
             const data = await fetchSpacesToShow() as ListingData[];
-
+            console.log(data);
             const initialIndices: Record<string, number> = {};
             data.forEach(listing => {
                 initialIndices[listing.id] = 0;
@@ -165,8 +165,6 @@ function Main({ setSearchData }: { setSearchData: (data: SearchItem[]) => void }
                     })}
                 </div>
 
-                {/* Map component section commented out in your original code */}
-                {/* okay get me back that code working */}
             </div>
         </div>
     );

@@ -15,6 +15,7 @@ export async function createBooking(data: BookingType) {
             data: {
                 listingId: data.listingId,
                 userId: session.user.id,
+                spaceId: data.spaceId,
                 date: data.date,
                 startTime: data.startTime,
                 endTime: data.endTime,
@@ -24,6 +25,7 @@ export async function createBooking(data: BookingType) {
                 processingFee: data.processingFee,
                 discountAmount: data.discountAmount,
                 hours: data.hours,
+                status: data.status as any,
             }
         })
     } catch (error) {

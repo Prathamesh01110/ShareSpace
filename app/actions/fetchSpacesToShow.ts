@@ -1,6 +1,6 @@
 'use server'
 import prisma from "@/lib/prisma";
-import { OperatingHours, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export async function fetchSpacesToShow() {
     try {
@@ -48,6 +48,30 @@ export async function fetchFullListing(listingId: string): Promise<FullListingDa
                 }
             }
         })
+        return listing;
+    } catch (error) {
+        console.error(error);
+        throw Error("Error fetching listing data");
+    }
+
+}
+
+export async function FirstListIdFromSpace(listingId: string): Promise<FullListingData> {
+    try {
+        console.log("Fetching listing for spaceId:", listingId);
+        const listing = await prisma.listing.findFirst({
+            where: {
+                spaceId: listingId,
+            },
+            include: {
+                space: {
+                    include: {
+                        operatingHours: true,
+                    }
+                }
+            }
+        })
+        console.log("Listing fetched:", listing);   
         return listing;
     } catch (error) {
         console.error(error);

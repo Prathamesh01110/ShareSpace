@@ -16,6 +16,8 @@ export type BookingType = {
     processingFee: number,
     discountAmount: number,
     hours: number,
+    status: string,
+    spaceId: string,
 };
 
 const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
@@ -192,6 +194,9 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
 
     // New function to handle the booking submission
     const handleSubmitBooking = async () => {
+        const isInstantBooking = spaceData?.instantBooking === 'EVERYONE' && meetsMinimumHours();
+        const bookingStatus: BookingType["status"] = isInstantBooking ? "CONFIRMED" : "PENDING"; 
+
         if (!selectedDate || !startTime || !endTime || !totalData) {
             setSubmitError("Please complete all required booking information");
             return;
@@ -216,6 +221,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
 
             const bookingData: BookingType = {
                 listingId: spaceData?.id || "",
+                spaceId: spaceData?.space?.id || "",
                 date: selectedDate,
                 startTime: startHour,
                 endTime: endHour,
@@ -225,6 +231,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
                 processingFee: totalData.processingFee,
                 discountAmount: totalData.discountAmount,
                 hours: totalData.hours,
+                status: bookingStatus,
             };
             await createBooking(bookingData);
             console.log("Submitting booking data:", bookingData);
