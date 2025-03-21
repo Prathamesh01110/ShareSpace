@@ -94,7 +94,7 @@ export default function Approval({ fetchedBookings }) {
               waitingApproval[selectedDate.toDateString()].map((schedule, index) => (
                 <div
                   key={index}
-                  className="relative p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 bg-white flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6"
+                  className="relative p-6 rounded-2xl shadow-lg border border-gray-200 bg-white flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6"
                 >
                   {schedule.approval === "PENDING" && (
                     <div className="absolute top-2 right-2 flex flex-col items-center">

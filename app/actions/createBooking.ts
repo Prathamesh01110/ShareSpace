@@ -26,6 +26,7 @@ export async function createBooking(data: BookingType) {
                 discountAmount: data.discountAmount,
                 hours: data.hours,
                 status: data.status as any,
+                spaceName: data.spaceName as any,
             }
         })
     } catch (error) {

@@ -29,6 +29,24 @@ export const fetchBookingForID = async  (spaceId: string): Promise<any> => {
     return spaces;
 };
 
+export const fetchBookingForUserID = async  (): Promise<any> => {
+    const session = await getServerSession(NEXT_AUTH) as UserSession;
+
+    if (!session?.user?.id) {
+        return null;
+    }
+
+    const spaces = await prisma.booking.findMany({
+        where: {
+            userId: session.user.id,
+        }
+    });
+
+    console.log("Spaces", spaces);
+
+    return spaces;
+};
+
 export const ChangeBookingStatus = async (bookingId: string) => {
     const session = await getServerSession(NEXT_AUTH) as UserSession;
 
@@ -46,4 +64,32 @@ export const ChangeBookingStatus = async (bookingId: string) => {
     });
 
     return updatedBooking;
+}
+
+export const ChangePaymentStatus = async (bookingId: string) => {    
+    const session = await getServerSession(NEXT_AUTH) as UserSession;
+
+    if (!session?.user?.id) {
+        return null;
+    }
+
+    const ChangedPayment = await prisma.booking.update({
+        where: {
+            id: bookingId,
+        },
+        data: {
+            paymentStatus: 'PAID',
+        }
+    });
+
+    const ChangedStatus = await prisma.booking.update({
+        where:{
+            id: bookingId,
+        },
+        data:{
+            status: 'COMPLETED',
+        }
+    });
+
+    return {ChangedPayment, ChangedStatus};
 }

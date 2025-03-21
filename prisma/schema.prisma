@@ -66,6 +66,7 @@ model Booking {
     id                 String        @id @default(cuid())
     listingId          String
     spaceId            String
+    spaceName          String
     userId             String
     date               DateTime
     startTime          Int

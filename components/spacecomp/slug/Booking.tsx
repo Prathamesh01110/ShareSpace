@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FullListingData } from "@/app/actions/fetchSpacesToShow";
 import { Select, SelectContent, SelectItem, SelectValue, SelectGroup, SelectLabel, SelectTrigger } from "@/components/ui/select";
 import { createBooking } from "@/app/actions/createBooking";
+import { useToast } from "@/hooks/use-toast"
 
 export type BookingType = {
     listingId: string,
@@ -18,9 +19,11 @@ export type BookingType = {
     hours: number,
     status: string,
     spaceId: string,
+    spaceName: string,
 };
 
 const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
+    const { toast } = useToast()
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [startTime, setStartTime] = useState("");
@@ -222,6 +225,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
             const bookingData: BookingType = {
                 listingId: spaceData?.id || "",
                 spaceId: spaceData?.space?.id || "",
+                spaceName: spaceData?.space?.name || "",
                 date: selectedDate,
                 startTime: startHour,
                 endTime: endHour,
@@ -235,11 +239,26 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
             };
             await createBooking(bookingData);
             console.log("Submitting booking data:", bookingData);
+            if(bookingStatus === "PENDING") {
+            toast({
+                title: "Request Submitted",
+                description: "Visit your dashboard to view the status of your booking.",
+            });
+        } else {
+            toast({
+                title: "Booking Confirmed",
+                description: "You have successfully booked this space.",
+            });
+        }
         } catch (error) {
             console.error("Booking submission error:", error);
             setSubmitError("Failed to submit booking. Please try again.");
         } finally {
             setIsSubmitting(false);
+            toast({
+                title: "Request Submitted",
+                description: "Vist your dashboard to view the status of your booking.",
+              })
         }
     };
 
@@ -440,6 +459,7 @@ const BookingSummary = ({ spaceData }: { spaceData: FullListingData }) => {
                     className="w-full bg-[#8559EC] text-lg hover:bg-[#5838A2] rounded-none p-6 font-medium"
                     disabled={!totalData || !isDateAvailable()|| isSubmitting}
                     onClick={handleSubmitBooking}
+                    
                 >
                     {isSubmitting ? (
                         <span className="flex items-center gap-2">
