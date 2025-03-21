@@ -121,8 +121,6 @@ export default function Page() {
             </div>
           )}
         </div>
-
-        {/* Content Area */}
         <div className="flex-1 p-5">{tabs.find((tab) => tab.key === activeTab)?.component}</div>
       </div>
     </div>

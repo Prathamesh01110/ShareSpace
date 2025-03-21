@@ -25,7 +25,6 @@ export default function Page() {
     <div>
       <Navbar />
       <div className="flex pt-12">
-        {/* Sidebar for Desktop */}
         <div className="hidden md:block w-64 bg-white text-black h-[calc(100vh-3rem)] p-5 sticky top-12">
           <h2 className="text-xl font-bold mb-5">Dashboard</h2>
           <nav>
@@ -45,8 +44,7 @@ export default function Page() {
           </nav>
         </div>
 
-        {/* Mobile Menu */}
-        <div className="md:hidden fixed top-24 left-4 z-50">
+        <div className="md:hidden fixed top-24 right-4 z-50">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="p-2 bg-gray-900 text-white rounded-md"
@@ -54,7 +52,7 @@ export default function Page() {
             <Menu size={24} />
           </button>
           {isOpen && (
-            <div className="absolute top-12 left-0 w-48 bg-gray-900 text-white p-4 rounded-lg shadow-lg">
+            <div className="absolute top-12 right-5 w-48 bg-gray-900 text-white p-4 rounded-lg shadow-lg">
               {tabs.map((tab) => (
                 <button
                   key={tab.key}
@@ -73,8 +71,7 @@ export default function Page() {
           )}
         </div>
 
-        {/* Content Area */}
-        <div className="flex-1 p-5">{tabs.find((tab) => tab.key === activeTab)?.component}</div>
+        <div className="flex-1 p-1 sm:p-5">{tabs.find((tab) => tab.key === activeTab)?.component}</div>
       </div>
     </div>
   );
